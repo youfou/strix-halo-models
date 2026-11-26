@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-26",
+  "generated": "2026-11-27",
   "models": [
     {
       "slug": "qwen3-coder-30b",
@@ -89,44 +89,6 @@
         }
       ],
       "size": 133223048000,
-      "modelscope": false
-    },
-    {
-      "slug": "minimax-m2.5",
-      "name": "MiniMax M2.5",
-      "repo": "unsloth/MiniMax-M2.5-GGUF",
-      "gated": false,
-      "files": [
-        {
-          "path": "Q3_K_M/MiniMax-M2.5-Q3_K_M-00001-of-00004.gguf",
-          "size": 8238112,
-          "sha256": "ba2d81272f843768f8ad02e4555eed0008e0fdd9d6a0950e2a669487d13cb703",
-          "modelscope_ok": true,
-          "hfmirror_ok": true
-        },
-        {
-          "path": "Q3_K_M/MiniMax-M2.5-Q3_K_M-00002-of-00004.gguf",
-          "size": 49496242464,
-          "sha256": "2395a7632d1c6765c5ac5a6abd20ad6fd0545509d2f4c2e59d717cc6eff809e0",
-          "modelscope_ok": true,
-          "hfmirror_ok": true
-        },
-        {
-          "path": "Q3_K_M/MiniMax-M2.5-Q3_K_M-00003-of-00004.gguf",
-          "size": 49334194016,
-          "sha256": "2f43a73e12316bd545a519d8023e2a41f50cabcba9a8a19d3d7e26f9bba41f32",
-          "modelscope_ok": true,
-          "hfmirror_ok": true
-        },
-        {
-          "path": "Q3_K_M/MiniMax-M2.5-Q3_K_M-00004-of-00004.gguf",
-          "size": 10433807776,
-          "sha256": "745b4baf5c68d0ae1bfb82817e7b5d72a2b79c57101bc65c7ae82023c8ead357",
-          "modelscope_ok": true,
-          "hfmirror_ok": true
-        }
-      ],
-      "size": 109272482368,
       "modelscope": false
     },
     {
@@ -223,30 +185,6 @@
         }
       ],
       "size": 24979492736,
-      "modelscope": false
-    },
-    {
-      "slug": "qwen2.5-coder-32b",
-      "name": "Qwen2.5-Coder-32B",
-      "repo": "Qwen/Qwen2.5-Coder-32B-Instruct-GGUF",
-      "gated": false,
-      "files": [
-        {
-          "path": "qwen2.5-coder-32b-instruct-q8_0.gguf",
-          "size": 34820884672,
-          "sha256": "ae6e5cee79233499b41502ea7270e665dc402b2c35c48d43ef2d5a0a10842725",
-          "modelscope_ok": true,
-          "hfmirror_ok": true
-        },
-        {
-          "path": "qwen2.5-coder-32b-instruct-q4_k_m.gguf",
-          "size": 19851335872,
-          "sha256": "4d64b316b5e6319d9613e0d97935d9ebd631fc7e334da400d00085eca749d085",
-          "modelscope_ok": true,
-          "hfmirror_ok": true
-        }
-      ],
-      "size": 54672220544,
       "modelscope": false
     },
     {
@@ -455,6 +393,6 @@
       "modelscope": false
     }
   ],
-  "total_size": 948812635200,
-  "total_files": 39
+  "total_size": 784867932288,
+  "total_files": 33
 }

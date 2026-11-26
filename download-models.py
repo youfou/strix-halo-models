@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Strix Halo 395 (128GB) 模型批量下载脚本 —— 在 macOS 或 Ubuntu 上运行，
-下载 18 个模型到模型盘，给 395 跑 llama.cpp 用。
+下载 16 个模型到模型盘，给 395 跑 llama.cpp 用。
 
 特性：
   * 多线程下载：aria2c，默认每文件 16 连接 / 16 分段
@@ -32,7 +32,7 @@ Strix Halo 395 (128GB) 模型批量下载脚本 —— 在 macOS 或 Ubuntu 上�
   本清单里的仓库目前全部公开，正常不需要。
 
 注意：脚本按 manifest.json（同目录）下载，清单在 2026-11-26 核实：
-  39 个文件，共 948.81 GB。
+  33 个文件，共 784.87 GB。（2026-11-27 删 MiniMax M2.5 与 Qwen2.5-Coder-32B：前者 Q3_K_M 在 128GB 上只能开 8–16K 上下文、已被 M2.7/M3 取代，后者为老模型、角色已被 Qwen3-Coder 系列覆盖；腾出的 163.94GB 预留给 Halogen 的 Qwen 3.8 Flash Next 约 111GB。）
 """
 
 import argparse

@@ -2,7 +2,7 @@
 
 模型总表见 [MODELS.md](MODELS.md)：22 个模型的调研（18 个可运行 + 4 个装不下），含推荐分级、评测分、量化与体积。
 
-一次下载 18 个模型（39 个文件，共 948.81GB），给 395 128GB 机器跑 llama.cpp 用。清单（大小、sha256）已逐文件对 Hugging Face 核实，下载完逐个校验。
+一次下载 16 个模型（33 个文件，共 784.87GB），给 395 128GB 机器跑 llama.cpp 用。清单（大小、sha256）已逐文件对 Hugging Face 核实，下载完逐个校验。2026-11-27 删 MiniMax M2.5 与 Qwen2.5-Coder-32B，腾出的空间预留给 Halogen 的 Qwen 3.8 Flash Next。
 
 macOS 和 Ubuntu 都能跑：下载脚本是 Python 3 + aria2c，启动脚本会自动按系统选命令（挂载检查、局域网 IP 显示都是跨平台的）。区别只在装软件的方式和目标盘的挂载点。
 
