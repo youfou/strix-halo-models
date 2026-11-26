@@ -1,0 +1,460 @@
+{
+  "generated": "2026-11-26",
+  "models": [
+    {
+      "slug": "qwen3-coder-30b",
+      "name": "Qwen3-Coder-30B-A3B",
+      "repo": "unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF",
+      "gated": false,
+      "files": [
+        {
+          "path": "Qwen3-Coder-30B-A3B-Instruct-Q8_0.gguf",
+          "size": 32483935392,
+          "sha256": "4ff1cff607804037bf6d2168249c570baa4e1621292b159c0e06591e0d7c3066",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "Qwen3-Coder-30B-A3B-Instruct-Q4_K_M.gguf",
+          "size": 18556689568,
+          "sha256": "fadc3e5f8d42bf7e894a785b05082e47daee4df26680389817e2093056f088ad",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        }
+      ],
+      "size": 51040624960,
+      "modelscope": false
+    },
+    {
+      "slug": "qwen3-coder-next-80b",
+      "name": "Qwen3-Coder-Next 80B",
+      "repo": "Qwen/Qwen3-Coder-Next-GGUF",
+      "gated": false,
+      "files": [
+        {
+          "path": "Qwen3-Coder-Next-Q8_0/Qwen3-Coder-Next-Q8_0-00001-of-00004.gguf",
+          "size": 26190321568,
+          "sha256": "30b7554fc0c846a5dc3ecf585884c77471f73e3da698a8ba4fabd8e7868c6533",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "Qwen3-Coder-Next-Q8_0/Qwen3-Coder-Next-Q8_0-00002-of-00004.gguf",
+          "size": 26212935584,
+          "sha256": "3f96379de5a5c4655cb378710ea571d5e9cc96f260120a44a6477198efcdc27d",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "Qwen3-Coder-Next-Q8_0/Qwen3-Coder-Next-Q8_0-00003-of-00004.gguf",
+          "size": 26047157792,
+          "sha256": "5dd1ce07eaae95ee430331dc9c6f3120ff88e4211ad3a0cceeaa963f25328504",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "Qwen3-Coder-Next-Q8_0/Qwen3-Coder-Next-Q8_0-00004-of-00004.gguf",
+          "size": 6361641024,
+          "sha256": "76730702c630bf76305139165cb85421858604030851dfd64fe96a5e67cda99d",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "Qwen3-Coder-Next-Q4_K_M/Qwen3-Coder-Next-Q4_K_M-00001-of-00004.gguf",
+          "size": 15524827040,
+          "sha256": "6bcfc9f9c37901eeb92172e2ab871224dab36a453d263bcb2547f737409534da",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "Qwen3-Coder-Next-Q4_K_M/Qwen3-Coder-Next-Q4_K_M-00002-of-00004.gguf",
+          "size": 14872168352,
+          "sha256": "817def0691ee9d08bf3dc4444be7aed29c9e52091e8fa9d97901ce7e7f6f01d3",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "Qwen3-Coder-Next-Q4_K_M/Qwen3-Coder-Next-Q4_K_M-00003-of-00004.gguf",
+          "size": 14503294496,
+          "sha256": "23aa634d47dca9b4ca3ea249384e6f01951b24c83cdc076f37f6f43d6c99883f",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "Qwen3-Coder-Next-Q4_K_M/Qwen3-Coder-Next-Q4_K_M-00004-of-00004.gguf",
+          "size": 3510702144,
+          "sha256": "249c768cc5f130dc731567d6edcbdacc48e14dec9e02c5dbe2b2185d2c5bdb2b",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        }
+      ],
+      "size": 133223048000,
+      "modelscope": false
+    },
+    {
+      "slug": "minimax-m2.5",
+      "name": "MiniMax M2.5",
+      "repo": "unsloth/MiniMax-M2.5-GGUF",
+      "gated": false,
+      "files": [
+        {
+          "path": "Q3_K_M/MiniMax-M2.5-Q3_K_M-00001-of-00004.gguf",
+          "size": 8238112,
+          "sha256": "ba2d81272f843768f8ad02e4555eed0008e0fdd9d6a0950e2a669487d13cb703",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "Q3_K_M/MiniMax-M2.5-Q3_K_M-00002-of-00004.gguf",
+          "size": 49496242464,
+          "sha256": "2395a7632d1c6765c5ac5a6abd20ad6fd0545509d2f4c2e59d717cc6eff809e0",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "Q3_K_M/MiniMax-M2.5-Q3_K_M-00003-of-00004.gguf",
+          "size": 49334194016,
+          "sha256": "2f43a73e12316bd545a519d8023e2a41f50cabcba9a8a19d3d7e26f9bba41f32",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "Q3_K_M/MiniMax-M2.5-Q3_K_M-00004-of-00004.gguf",
+          "size": 10433807776,
+          "sha256": "745b4baf5c68d0ae1bfb82817e7b5d72a2b79c57101bc65c7ae82023c8ead357",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        }
+      ],
+      "size": 109272482368,
+      "modelscope": false
+    },
+    {
+      "slug": "qwen3-235b",
+      "name": "Qwen3-235B-A22B",
+      "repo": "bartowski/Qwen_Qwen3-235B-A22B-Instruct-2507-GGUF",
+      "gated": false,
+      "files": [
+        {
+          "path": "Qwen_Qwen3-235B-A22B-Instruct-2507-Q3_K_M/Qwen_Qwen3-235B-A22B-Instruct-2507-Q3_K_M-00001-of-00003.gguf",
+          "size": 39961427168,
+          "sha256": "2566cc3575a4d83628a8528f541a57190df2b59ec0a518bc320c268171a25ce9",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "Qwen_Qwen3-235B-A22B-Instruct-2507-Q3_K_M/Qwen_Qwen3-235B-A22B-Instruct-2507-Q3_K_M-00002-of-00003.gguf",
+          "size": 39750662816,
+          "sha256": "57b4d93adc3035e0b35113474ba026f36785d1534f0c9ba341dd3e87f114a8f6",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "Qwen_Qwen3-235B-A22B-Instruct-2507-Q3_K_M/Qwen_Qwen3-235B-A22B-Instruct-2507-Q3_K_M-00003-of-00003.gguf",
+          "size": 27617157600,
+          "sha256": "20c0c5a02176de1faef44acabd1e98d13926fb30a1c1d8963db722a75bbe7e7d",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        }
+      ],
+      "size": 107329247584,
+      "modelscope": false
+    },
+    {
+      "slug": "qwen3.5-122b",
+      "name": "Qwen3.5-122B-A10B",
+      "repo": "unsloth/Qwen3.5-122B-A10B-GGUF",
+      "gated": false,
+      "files": [
+        {
+          "path": "Q4_K_M/Qwen3.5-122B-A10B-Q4_K_M-00001-of-00003.gguf",
+          "size": 10943552,
+          "sha256": "467c9bd92ea518539cf75bf5a5fbfbd35e9a0b40d766ccaa67bf120e12041df3",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "Q4_K_M/Qwen3.5-122B-A10B-Q4_K_M-00002-of-00003.gguf",
+          "size": 49968146912,
+          "sha256": "90db14846413aebdac365b57206441437cac5f7e5037d94b325f0167f902e6e7",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "Q4_K_M/Qwen3.5-122B-A10B-Q4_K_M-00003-of-00003.gguf",
+          "size": 26557874144,
+          "sha256": "e3c24b8ebec070bb4f69ea0aca25a16531da7440cd515529953e046882901f97",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        }
+      ],
+      "size": 76536964608,
+      "modelscope": false
+    },
+    {
+      "slug": "gpt-oss-120b",
+      "name": "gpt-oss-120b",
+      "repo": "ggml-org/gpt-oss-120b-GGUF",
+      "gated": false,
+      "files": [
+        {
+          "path": "gpt-oss-120b-MXFP4.gguf",
+          "size": 63387346208,
+          "sha256": "582bd40f6886200101f4c4ed9f25f3fe80cc14c86e9e2b37746cd8904a0c622d",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        }
+      ],
+      "size": 63387346208,
+      "modelscope": false
+    },
+    {
+      "slug": "glm-4.7-flash",
+      "name": "GLM-4.7-Flash",
+      "repo": "bartowski/zai-org_GLM-4.7-Flash-GGUF",
+      "gated": false,
+      "files": [
+        {
+          "path": "zai-org_GLM-4.7-Flash-Q6_K_L.gguf",
+          "size": 24979492736,
+          "sha256": "1b5f54977184d612572b93ec3babc60e341e9f9b86f5e5003bd27f30df64f859",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        }
+      ],
+      "size": 24979492736,
+      "modelscope": false
+    },
+    {
+      "slug": "qwen2.5-coder-32b",
+      "name": "Qwen2.5-Coder-32B",
+      "repo": "Qwen/Qwen2.5-Coder-32B-Instruct-GGUF",
+      "gated": false,
+      "files": [
+        {
+          "path": "qwen2.5-coder-32b-instruct-q8_0.gguf",
+          "size": 34820884672,
+          "sha256": "ae6e5cee79233499b41502ea7270e665dc402b2c35c48d43ef2d5a0a10842725",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "qwen2.5-coder-32b-instruct-q4_k_m.gguf",
+          "size": 19851335872,
+          "sha256": "4d64b316b5e6319d9613e0d97935d9ebd631fc7e334da400d00085eca749d085",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        }
+      ],
+      "size": 54672220544,
+      "modelscope": false
+    },
+    {
+      "slug": "qwen3-30b",
+      "name": "Qwen3-30B-A3B",
+      "repo": "bartowski/Qwen_Qwen3-30B-A3B-Instruct-2507-GGUF",
+      "gated": false,
+      "files": [
+        {
+          "path": "Qwen_Qwen3-30B-A3B-Instruct-2507-Q8_0.gguf",
+          "size": 32483932160,
+          "sha256": "c2b7658bc62282083a8296a535400520b612a1044322be77ad7a53fa4d4fb92c",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        }
+      ],
+      "size": 32483932160,
+      "modelscope": false
+    },
+    {
+      "slug": "qwen3-32b",
+      "name": "Qwen3-32B",
+      "repo": "Qwen/Qwen3-32B-GGUF",
+      "gated": false,
+      "files": [
+        {
+          "path": "Qwen3-32B-Q8_0.gguf",
+          "size": 34817718912,
+          "sha256": "2c50eb8aad05047dbf24fa014eb621adf552e14176cabe0c5db4ef38c91e2169",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        }
+      ],
+      "size": 34817718912,
+      "modelscope": false
+    },
+    {
+      "slug": "gemma-3-27b",
+      "name": "Gemma-3-27B-it",
+      "repo": "unsloth/gemma-3-27b-it-GGUF",
+      "gated": false,
+      "files": [
+        {
+          "path": "gemma-3-27b-it-Q8_0.gguf",
+          "size": 28707972192,
+          "sha256": "4f8cb99283aa9ed7926280a372e0b04224d2be0b790a03b5ad85d25a18906499",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "mmproj-BF16.gguf",
+          "size": 857739392,
+          "sha256": "ef40d577c9a3911c4fb6add3f757c04307720e732a55f780b6fee0a7eb39e2b0",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        }
+      ],
+      "size": 29565711584,
+      "modelscope": false
+    },
+    {
+      "slug": "devstral-2",
+      "name": "Devstral-2 123B",
+      "repo": "unsloth/Devstral-2-123B-Instruct-2512-GGUF",
+      "gated": false,
+      "files": [
+        {
+          "path": "Q4_K_M/Devstral-2-123B-Instruct-2512-Q4_K_M-00001-of-00002.gguf",
+          "size": 49936343776,
+          "sha256": "e1d870265f1dced7ca17c198a8701c0fb2c32c5a664f71183c25bbe7dcb95ef2",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "Q4_K_M/Devstral-2-123B-Instruct-2512-Q4_K_M-00002-of-00002.gguf",
+          "size": 24961318624,
+          "sha256": "18137111738c71ff3cda27a6012ec448c51ff0cb0cf7b20ec8d01b9801281114",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        }
+      ],
+      "size": 74897662400,
+      "modelscope": false
+    },
+    {
+      "slug": "qwen3-vl-32b",
+      "name": "Qwen3-VL-32B",
+      "repo": "Qwen/Qwen3-VL-32B-Instruct-GGUF",
+      "gated": false,
+      "files": [
+        {
+          "path": "Qwen3VL-32B-Instruct-Q8_0.gguf",
+          "size": 34817720352,
+          "sha256": "936dcdc564cf9f907af80cc581c53e01a275725b29d06ad753b923c1463f6751",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "mmproj-Qwen3VL-32B-Instruct-Q8_0.gguf",
+          "size": 772360224,
+          "sha256": "c01734a97adc350c1eebb957ed433afee4e376ebd0949163f659c76d8dcf20ca",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        }
+      ],
+      "size": 35590080576,
+      "modelscope": false
+    },
+    {
+      "slug": "qwen3-8b",
+      "name": "Qwen3-8B",
+      "repo": "Qwen/Qwen3-8B-GGUF",
+      "gated": false,
+      "files": [
+        {
+          "path": "Qwen3-8B-Q8_0.gguf",
+          "size": 8709518112,
+          "sha256": "408b955510e196121c1c375201744783b5c9a43c7956d73fc78df54c66e883d6",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        }
+      ],
+      "size": 8709518112,
+      "modelscope": false
+    },
+    {
+      "slug": "qwen3-embedding-8b",
+      "name": "Qwen3-Embedding-8B",
+      "repo": "Qwen/Qwen3-Embedding-8B-GGUF",
+      "gated": false,
+      "files": [
+        {
+          "path": "Qwen3-Embedding-8B-Q8_0.gguf",
+          "size": 8047105824,
+          "sha256": "d20ddc71e8a5c4344f2343481e242233a997dc5eaff442427a945836c97b4deb",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        }
+      ],
+      "size": 8047105824,
+      "modelscope": false
+    },
+    {
+      "slug": "inkling-2-mini",
+      "name": "Inkling-2-Mini",
+      "repo": "ggml-org/Inkling-2-Mini-GGUF",
+      "gated": false,
+      "files": [
+        {
+          "path": "Inkling-2-Mini-Q8_0.gguf",
+          "size": 27820099264,
+          "sha256": "d57542f8aea5d7639beba5fc4ae7f584754916f63ac5d5a69328c27f652f45da",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "mmproj-Inkling-2-Mini-Q8_0.gguf",
+          "size": 345910944,
+          "sha256": "233287272ec5ac39b4168677aba54a4c024f202410f5629fac1830e1059f8abb",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        }
+      ],
+      "size": 28166010208,
+      "modelscope": false
+    },
+    {
+      "slug": "ripple-65b",
+      "name": "Ripple-65B-Preview",
+      "repo": "AtomicChat/Ripple-65B-Preview-GGUF",
+      "gated": false,
+      "files": [
+        {
+          "path": "Ripple-65B-Preview-Q8_0-00001-of-00002.gguf",
+          "size": 44906597984,
+          "sha256": "1fdbb76b6ffcc416b120d74257e2e4412f8b7bb99aac315d9b7088e47adf12b5",
+          "modelscope_ok": false,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "Ripple-65B-Preview-Q8_0-00002-of-00002.gguf",
+          "size": 23933515584,
+          "sha256": "48c6dea463d63c471d7f6d225cd52b1c54f7fbfa56c7f03ae1a7aae3f16fa9a7",
+          "modelscope_ok": false,
+          "hfmirror_ok": true
+        }
+      ],
+      "size": 68840113568,
+      "modelscope": false
+    },
+    {
+      "slug": "bonsai-2.5-27b",
+      "name": "Bonsai 2.5 27B",
+      "repo": "prism-ml/Ternary-Bonsai-2.5-27B-GGUF",
+      "gated": false,
+      "files": [
+        {
+          "path": "Ternary-Bonsai-2.5-27B-PQ2_0.gguf",
+          "size": 7253354848,
+          "sha256": "103a11c94324029d8bae3f8152f30bba414730064cfb77438f8589db72e1aa85",
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        }
+      ],
+      "size": 7253354848,
+      "modelscope": false
+    }
+  ],
+  "total_size": 948812635200,
+  "total_files": 39
+}

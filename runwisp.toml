@@ -1,0 +1,65 @@
+# RunWisp 启动配置：Strix Halo 395 模型下载（18 个模型，共 948.81GB）
+#
+# 用法（macOS / Ubuntu 通用）：
+#   1. 把 download-models.py、manifest.json、runwisp.toml、start-download.sh
+#      四个文件放在同一个目录（建议 ~/strix-halo-models/）。
+#   2. 执行 ./start-download.sh —— 它会校验配置、启动 daemon（如未运行）、
+#      触发下载任务。监控在 Web UI http://127.0.0.1:9477 看。
+#   3. 停止：./start-download.sh stop（等同于按 Ctrl+C，断点会保存，
+#      下次再跑自动续传）。
+#
+# 目标盘：run 命令里的 --dest。macOS 默认 /Volumes/llms/models，
+# Ubuntu 上改成挂载点，例如 /mnt/llms/models（改 run 那一行即可，
+# 或启动前用 DOWNLOAD_DEST=/mnt/llms/models 临时覆盖）。
+# Ubuntu 上装 aria2 / RunWisp、格式化与挂载磁盘的步骤见 README 的 Ubuntu 章节。
+#
+# 注意：这是一次性长任务（约 24 小时），不是常驻服务，所以用 [tasks.*]
+# 而不是 [services.*]——服务会在进程退出后自动重启，下载完又会重跑，
+# 任务只在你手动触发时跑一次。
+#
+# 如果你要把这一段并进已有的 runwisp.toml，只拷 [tasks.download-models]
+# 及其 [tasks.download-models.env] 两段过去，[daemon] 一段不要重复。
+
+[daemon]
+# 这个 daemon 在 Web UI / TUI / 通知里显示的名字，用来和别的实例区分。
+name = "models-download"
+timezone = "Asia/Singapore"
+# daemon 自己关机时等任务收尾的上限，要 ≥ 任务的 graceful_stop（30s），
+# 否则 daemon 会在脚本保存完断点前就 SIGKILL 它。
+shutdown_timeout = "30s"
+
+[defaults]
+keep_runs = 10
+
+[tasks.download-models]
+description = "下载 395 用的 18 个模型（948.81GB）到外接 SSD"
+# 脚本和 manifest.json 所在的目录。start-download.sh 每次启动时都会把
+# 这一行改成它自己所在的目录，所以你把文件夹放哪都行，不用手工改这里。
+working_dir = "~/strix-halo-models"
+# manifest.json 默认从脚本所在目录读，所以这里不用传 --manifest；--dest
+# 是目标盘的挂载点（macOS 默认 /Volumes/llms/models，Ubuntu 上改成
+# /mnt/llms/models 这类挂载点）。
+run = "python3 ./download-models.py --dest /Volumes/llms/models"
+# 不设 cron：只手动触发（start-download.sh 或 Web UI 点 Run）。
+# 不设 timeout：全程约 24 小时，超时保护由下载脚本自己做
+# （持续 0 速 180 秒自动重试，有速度时不设超时）。
+# RunWisp 层面不重试：下载脚本自己无限重试；脚本返回非 0 意味着
+# 磁盘满、盘没挂载这类需要人处理的问题，重跑也一样失败。
+retry_attempts = 0
+# 停止时先发 SIGINT（等同于按 Ctrl+C），脚本会让 aria2c 保存断点
+# 状态后退出（退出码 130），再跑自动续传。
+stop_signal = "SIGINT"
+# SIGINT 后给脚本 30 秒收尾，超时才 SIGKILL。脚本收尾最多等 aria2c
+# 15 秒，所以 30 秒够用。
+graceful_stop = "30s"
+# 1.9.1 里没有 exit_codes 这个键：人为主动停止时 RunWisp 把这次运行记
+# 为 stopped，而 stopped 不在默认的 failures 清单里，所以不会算失败、
+# 不会触发重试；脚本返回非 0（磁盘满、盘没挂载这类问题）才记为失败。
+keep_runs = 10
+
+[tasks.download-models.env]
+# daemon 经 launchd 启动时 PATH 里没有 Homebrew 的目录，aria2c 会找
+# 不到；这里显式给全。Apple Silicon 和 Intel 的 Homebrew 路径都含了。
+# Ubuntu 上这段也照用：/usr/bin:/bin 已含 aria2c 和 python3，
+# Homebrew 那两项不存在时只是不起作用，不会报错。
+PATH = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
