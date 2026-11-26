@@ -98,8 +98,10 @@ ls /mnt/llms/models
 手动挂载重启就没了。想每次开机自动挂，把下面一行加进 `/etc/fstab`（UUID 换成你那块盘的，`uid`/`gid` 换成你自己的）：
 
 ```
-UUID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX /mnt/llms exfat defaults,nofail,uid=1000,gid=1000,umask=0022,x-systemd.device-timeout=10 0 0
+UUID=XXXX-XXXX /mnt/llms exfat defaults,nofail,uid=1000,gid=1000,umask=0022,x-systemd.device-timeout=10 0 0
 ```
+
+注意：exFAT 的 UUID 本来就只有 8 位（`XXXX-XXXX` 这种形式），`lsblk -f` 显示的那一小段就是完整的，不是被截断了。exFAT 没有 ext4 那种 36 位的长 UUID，Linux 是拿卷序列号拼出这 8 位来用的，fstab 里直接照抄这一小段就行，别自己补成 36 位。
 
 `nofail` 是关键：盘没插时开机不会卡住（没有它，开机等不到这块盘会进紧急模式）。改完不用重启就能验证：
 
