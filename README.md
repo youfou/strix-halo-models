@@ -2,7 +2,9 @@
 
 模型总表见 [MODELS.md](MODELS.md)：22 个模型的调研（18 个可运行 + 4 个装不下），含推荐分级、评测分、量化与体积。
 
-一次下载 16 个模型（33 个文件，共 784.87GB），给 395 128GB 机器跑 llama.cpp 用。清单（大小、sha256）已逐文件对 Hugging Face 核实，下载完逐个校验。2026-11-27 删 MiniMax M2.5 与 Qwen2.5-Coder-32B，腾出的空间预留给 Halogen 的 Qwen 3.8 Flash Next。
+一次下载 16 个 llama.cpp 模型 + Halogen 的 Qwen 3.8 Flash Next（43 个文件，共 905.16GB），给 395 128GB 机器跑 llama.cpp 与 Halogen 用。清单（大小、sha256）已逐文件对 Hugging Face 核实，下载完逐个校验。2026-11-27 删 MiniMax M2.5 与 Qwen2.5-Coder-32B（腾 163.94GB），同日加 Halogen 模型 10 个文件、120.30GB（主模型 v2.hgn 66.69GB + n-gram 表 51.20GB + draft head 1.49GB + vision 0.90GB + tokenizer/ 6 个小文件）。
+
+**Halogen 的 tokenizer 文件位置注意**：下载脚本把文件扁平化存到 `<dest>/<slug>/<basename>`，tokenizer/ 下的 6 个文件（chat_template.jinja、generation_config.json、merges.txt、tokenizer.json、tokenizer_config.json、vocab.json）会落在模型目录根部（`/mnt/llms/models/halogen-qwen3.8-flash-next/`），而不是 tokenizer/ 子目录里。Halogen 要求 tokenizer 文件放在模型旁边的 `tokenizer/` 子目录里，部署 Halogen 前必须手动把这 6 个文件移进 `tokenizer/` 子目录，否则引擎找不到分词器。命令见下文「Halogen 部署前」一节。
 
 macOS 和 Ubuntu 都能跑：下载脚本是 Python 3 + aria2c，启动脚本会自动按系统选命令（挂载检查、局域网 IP 显示都是跨平台的）。区别只在装软件的方式和目标盘的挂载点。
 
@@ -200,6 +202,36 @@ python3 verify-models.py --yes       # 坏文件全部直接删，不逐个问
 ```
 
 退出码：0 = 校验的全部通过；1 = 发现坏文件（无论删没删）；2 = 用法或配置错误。
+
+## Halogen 部署前：把 tokenizer 文件移进子目录
+
+Halogen 要求 tokenizer 文件放在模型旁边的 `tokenizer/` 子目录里，但下载脚本是扁平化存放的，6 个 tokenizer 文件下载完会落在模型目录根部。部署 Halogen 前先移进去（Ubuntu，模型盘在 `/mnt/llms/models`）：
+
+```bash
+cd /mnt/llms/models/halogen-qwen3.8-flash-next
+mkdir -p tokenizer
+mv chat_template.jinja generation_config.json merges.txt tokenizer.json tokenizer_config.json vocab.json tokenizer/
+ls -R  # 确认：4 个 .hgn 在根目录，6 个 tokenizer 文件在 tokenizer/ 里
+```
+
+移完之后目录结构应该是：
+
+```text
+halogen-qwen3.8-flash-next/
+├── qwen38-flash-next-v2.hgn            # 主模型
+├── qwen38-flash-next-ngram.hgn         # 查找表
+├── qwen38-flash-next-drafter-r2-ht4.hgn # draft head
+├── qwen38-flash-next-vision.hgn        # 视觉模块
+└── tokenizer/
+    ├── chat_template.jinja
+    ├── generation_config.json
+    ├── merges.txt
+    ├── tokenizer.json
+    ├── tokenizer_config.json
+    └── vocab.json
+```
+
+注意：不要在下载还没跑完时移文件——脚本按扁平化路径校验，移走后会被判定为缺失而重下。等 `verify-models.py` 校验全部通过后再移。
 
 ## 注意事项
 

@@ -391,8 +391,88 @@
       ],
       "size": 7253354848,
       "modelscope": false
+    },
+    {
+      "slug": "halogen-qwen3.8-flash-next",
+      "name": "Qwen 3.8 Flash Next (Halogen)",
+      "repo": "peonist-ai/halogen-qwen3.8-flash-next",
+      "gated": false,
+      "modelscope": false,
+      "files": [
+        {
+          "path": "qwen38-flash-next-v2.hgn",
+          "sha256": "547afa65f464fd8ad2a0fc875a51f0310daa2665",
+          "size": 66687678432,
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "qwen38-flash-next-ngram.hgn",
+          "sha256": "8ddca9c825b232448b1c2c491349a05b8d1011f6",
+          "size": 51200246144,
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "qwen38-flash-next-drafter-r2-ht4.hgn",
+          "sha256": "f492e5cb85323b6022e106a3031dffbe1d01dc37",
+          "size": 1488276864,
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "qwen38-flash-next-vision.hgn",
+          "sha256": "aa1aef494e04e6d7ba834df95d8fc3e71eeb0126",
+          "size": 897916416,
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "tokenizer/chat_template.jinja",
+          "sha256": "c0c686f9c38d70d179fb7b5f5aa7530bc913dda3",
+          "size": 8952,
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "tokenizer/generation_config.json",
+          "sha256": "023756cfadf88e5bf69eefeee3e172f38c448d64",
+          "size": 202,
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "tokenizer/merges.txt",
+          "sha256": "a494e019ca1502219fd0128658b979e5f05ae8e8",
+          "size": 3353259,
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "tokenizer/tokenizer.json",
+          "sha256": "9328ce9c41e80f6dd7bc2c66d8ae1fc93bf87440",
+          "size": 12809320,
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "tokenizer/tokenizer_config.json",
+          "sha256": "5de744b3fca2129d7186979ae47c06be33903243",
+          "size": 17928,
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        },
+        {
+          "path": "tokenizer/vocab.json",
+          "sha256": "0aa0ce0658d60ac4a5d609f4eadb0e8e43514176",
+          "size": 6722759,
+          "modelscope_ok": true,
+          "hfmirror_ok": true
+        }
+      ],
+      "size": 120297030276
     }
   ],
-  "total_size": 784867932288,
-  "total_files": 33
+  "total_size": 905164962564,
+  "total_files": 43
 }

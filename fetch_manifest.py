@@ -71,6 +71,17 @@ MODELS = [
     ("bonsai-2.5-27b", "Bonsai 2.5 27B",
      "prism-ml/Ternary-Bonsai-2.5-27B-GGUF",
      [("exact", "Ternary-Bonsai-2.5-27B-PQ2_0.gguf")]),
+    # Halogen 专用模型（.hgn 格式，不跑 llama.cpp，跑 halogen-flash-server）。
+    # 注意：下载脚本把文件扁平化存到 <dest>/<slug>/<basename>，tokenizer/
+    # 下的 6 个文件会落在模型目录根部，部署 Halogen 前需手动把它们移进
+    # tokenizer/ 子目录（见 README）。
+    ("halogen-qwen3.8-flash-next", "Qwen 3.8 Flash Next (Halogen)",
+     "peonist-ai/halogen-qwen3.8-flash-next",
+     [("exact", "qwen38-flash-next-v2.hgn"),
+      ("exact", "qwen38-flash-next-ngram.hgn"),
+      ("exact", "qwen38-flash-next-drafter-r2-ht4.hgn"),
+      ("exact", "qwen38-flash-next-vision.hgn"),
+      ("prefix", "tokenizer/")]),
 ]
 
 
