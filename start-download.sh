@@ -5,7 +5,8 @@
 #   ./start-download.sh          启动下载（daemon 未运行会自动拉起；
 #                                只触发任务就返回，不占命令行，下载在
 #                                daemon 手下后台跑；看实时输出用 logs）
-#   ./start-download.sh stop     停止下载（等同于按 Ctrl+C，断点已保存）
+#   ./start-download.sh stop     停下载并彻底停掉 daemon（断点已保存；
+#                                下次 start 会重新拉起 daemon 并续传）
 #   ./start-download.sh status   看 daemon 与任务状态
 #   ./start-download.sh logs     看本次运行的实时输出
 #   ./start-download.sh restart  重启 daemon（改了监听地址/端口后用，
@@ -186,11 +187,21 @@ start)
     info "停止：./start-download.sh stop"
     ;;
 stop)
+    # 停下载并彻底停掉 daemon：下载是断点续传的，daemon 空跑占资源，
+    # 不下载时没必要留着。下次 ./start-download.sh 会重新拉起 daemon
+    # 并从断点续传。任务没在跑时只停 daemon，不报错。
     daemon_running || die "daemon 未运行，没有正在跑的任务"
-    runwisp stop "$TASK" -c "$CONFIG" --data "$DATA" \
-        || die "停止失败（任务可能已经不在运行）"
-    info "已发停止信号（SIGINT），脚本正在保存断点后退出。"
-    info "下次执行 ./start-download.sh 会从断点续传。"
+    info "正在停止任务 $TASK（保存断点）……"
+    runwisp stop "$TASK" -c "$CONFIG" --data "$DATA" >/dev/null 2>&1 || true
+    info "正在停止 daemon……"
+    runwisp stop -c "$CONFIG" --data "$DATA" >/dev/null 2>&1 || true
+    for ((i = 0; i < 40; i++)); do
+        daemon_running || break
+        sleep 1
+    done
+    daemon_running && die "daemon 40 秒内没停下，先手工处理再跑"
+    info "任务已停，daemon 已停，Web UI 已关闭。"
+    info "下次执行 ./start-download.sh 会重新拉起 daemon 并从断点续传。"
     ;;
 status)
     daemon_running || die "daemon 未运行"

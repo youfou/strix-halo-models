@@ -175,14 +175,14 @@ python3 download-models.py --dest /mnt/llms/models       # Ubuntu
 ## 停止与续传
 
 ```bash
-./start-download.sh stop     # 停止，等同于按 Ctrl+C
+./start-download.sh stop     # 停下载并彻底停掉 daemon（断点已保存）
 ./start-download.sh status   # 看状态
 ./start-download.sh logs     # 看实时输出
 ./start-download.sh restart  # 重启 daemon（改了监听地址/端口后用，
                              # reload 改不了这两个），下载从断点续传
 ```
 
-随时都能停，重跑自动从断点续传，已下完的文件按大小跳过。启动命令本身不阻塞：它只触发任务就返回，下载在 daemon 手下后台跑；要停必须用 `stop` 或 Web UI。
+随时都能停，重跑自动从断点续传，已下完的文件按大小跳过。`stop` 会把下载任务和 daemon 一起停掉（Web UI 也随之关闭），不下载时 daemon 不空跑；下次 `./start-download.sh` 会重新拉起 daemon 并续传。启动命令本身不阻塞：它只触发任务就返回，下载在 daemon 手下后台跑。
 
 ## 校验已下载的文件
 
