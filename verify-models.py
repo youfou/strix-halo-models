@@ -73,11 +73,12 @@ def fmt_size(n):
 
 
 def sha256_file(path, size):
-    """算文件 sha256。大文件（>1GB）每 2 秒在同一行刷新一次进度。"""
+    """算文件 sha256。大文件（>1GB）每 2 秒在同一行刷新一次进度（含读取速度）。"""
     h = hashlib.sha256()
     done = 0
     last_show = 0.0
     import time
+    start = time.time()
     show_progress = size > (1 << 30)
     with open(path, "rb") as f:
         while True:
@@ -91,9 +92,12 @@ def sha256_file(path, size):
                 if now - last_show >= 2.0:
                     last_show = now
                     pct = done * 100.0 / size
+                    elapsed = now - start
+                    speed = done / elapsed if elapsed > 0 else 0
                     sys.stdout.write(
-                        "\r  已读 %s / %s (%.1f%%)" % (
-                            fmt_size(done), fmt_size(size), pct))
+                        "\r  已读 %s / %s (%.1f%%)  %.2f GB/s" % (
+                            fmt_size(done), fmt_size(size), pct,
+                            speed / (1 << 30)))
                     sys.stdout.flush()
     if show_progress:
         sys.stdout.write("\r" + " " * 60 + "\r")
