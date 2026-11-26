@@ -34,7 +34,7 @@ brew install runwisp/tap/runwisp
 sudo apt update && sudo apt install aria2
 ```
 
-RunWisp 没有 apt 包，从 GitHub Releases 下 Linux 版（395 是 x86_64，用 linux-x64；去 Releases 页确认一下最新版本号，这里以 v1.11.0 为例）：
+RunWisp 没有 apt 包，从 GitHub Releases 下 Linux 版（x86_64，用 linux-x64；去 Releases 页确认一下最新版本号，这里以 v1.11.0 为例）：
 
 ```bash
 cd /tmp
@@ -141,7 +141,7 @@ run = "python3 ./download-models.py --dest /mnt/llms/models"
 
 脚本会校验配置、拉起 RunWisp daemon（没跑的话）、触发下载，然后立即返回（不占命令行，下载在 daemon 手下后台跑）。进度在 Web UI 看：本机 http://127.0.0.1:9477，局域网另一台设备用 http://<这台机器的局域网 IP>:9477（daemon 默认监听 0.0.0.0，即全部网卡；只想本机访问时 `RUNWISP_HOST=127.0.0.1 ./start-download.sh`）。想在终端里看实时输出用 `./start-download.sh logs`。脚本自己的详细日志在目标盘的 `.logs/` 目录。
 
-RunWisp 自己的数据（数据库、日志、控制 socket）放在 `~/.runwisp`（内置盘），因为 exFAT 不支持 Unix socket；下载本身仍写到外接盘的 `models/`，不受影响。Web UI 的密码：没设 `RUNWISP_PASSWORD` 时每次启动随机生成，用 `runwisp password -c runwisp.toml --data ~/.runwisp` 查看；想固定密码就启动前加 `RUNWISP_PASSWORD=你的密码 ./start-download.sh`。注意：0.0.0.0 会把 Web UI 暴露给整个局域网，务必设一个固定密码（Web UI 能启停任务，不设密码等于把控制权交给局域网里的任何人）；想上 HTTPS 可在 `runwisp.toml` 的 `[daemon]` 里加 `tls = "auto"`（自签证书，浏览器会报证书警告，点继续即可）。
+RunWisp 自己的数据（数据库、日志、控制 socket）放在 `~/.runwisp`（内置盘），因为 exFAT 不支持 Unix socket；下载本身仍写到模型盘的 `models/`，不受影响。Web UI 的密码：没设 `RUNWISP_PASSWORD` 时每次启动随机生成，用 `runwisp password -c runwisp.toml --data ~/.runwisp` 查看；想固定密码就启动前加 `RUNWISP_PASSWORD=你的密码 ./start-download.sh`。注意：0.0.0.0 会把 Web UI 暴露给整个局域网，务必设一个固定密码（Web UI 能启停任务，不设密码等于把控制权交给局域网里的任何人）；想上 HTTPS 可在 `runwisp.toml` 的 `[daemon]` 里加 `tls = "auto"`（自签证书，浏览器会报证书警告，点继续即可）。
 
 ### 环境变量
 
@@ -205,5 +205,5 @@ python3 verify-models.py --yes       # 坏文件全部直接删，不逐个问
 
 - 全程约 24 小时（按 100Mbps 线持续 11MB/s 估算），无人值守：断网、0 速都会自动重试。
 - 镜像优先走 ModelScope（37 个文件），Ripple 的 2 个文件走 hf-mirror；某个镜像挂了自动换下一个。
-- 跑完会在目标目录生成一份 README.md，列了每个模型和 llama-server 的用法，插到 Ubuntu 上直接用。
-- 盘在 macOS 和 Ubuntu 之间换着用没问题（exFAT 通用）：在 Mac 上下到一半，拔盘（先卸载）插到 Ubuntu 上继续跑，断点续传接着下，不用重下。
+- 跑完会在目标目录生成一份 README.md，列了每个模型和 llama-server 的用法，395 到手后挂上盘直接用。
+- 盘是 exFAT，macOS 和 Ubuntu 通用。之前就是从 Mac 上拔下来（先卸载）插到 NUC 上续传的，断点接着下，不用重下；以后想换回 Mac 也一样。

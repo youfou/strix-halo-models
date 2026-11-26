@@ -27,9 +27,9 @@ set -u
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 CONFIG="$SCRIPT_DIR/runwisp.toml"
-# RunWisp 自己的数据（数据库、日志、控制 socket）放内置盘，不放外接盘：
+# RunWisp 自己的数据（数据库、日志、控制 socket）放内置盘，不放模型盘：
 # exFAT 不支持 Unix socket，daemon 会在 .runwisp/runwisp.sock 上 bind 失败。
-# 下载本身仍走 runwisp.toml 里 --dest 指的外接盘，不受影响。
+# 下载本身仍走 runwisp.toml 里 --dest 指的模型盘，不受影响。
 DATA="${RUNWISP_DATA:-$HOME/.runwisp}"
 TASK="download-models"
 PORT="${RUNWISP_PORT:-9477}"
@@ -48,8 +48,10 @@ daemon_running() {
 }
 
 # 任务是否正在跑（看 status --json 里 lastRun 的状态）。
-# 查不到或出错时返回非 0（按“没在跑”处理，直接触发即可，start 本身
-# 对已在跑的任务也是安全的 no-op）。
+# 查不到或出错时返回非 0（按“没在跑”处理，直接触发即可）。
+# 注意：runwisp start 对已在跑的任务不是 no-op——默认 on_overlap=queue
+# 会把这次触发排进队列，等当前这次跑完再启动；本配置已设 on_overlap=skip，
+# 重复触发会被丢弃而不是排队，这里先拦住是给一句明确提示。
 task_running() {
     runwisp status --json -c "$CONFIG" --data "$DATA" 2>/dev/null | python3 -c "
 import json, sys
@@ -110,7 +112,7 @@ if [ -n "${DOWNLOAD_DEST:-}" ]; then
     sed "/^run = /s|--dest [^\" ]*|--dest $esc_dest|" "$CONFIG" > "$CONFIG.tmp" \
         && mv "$CONFIG.tmp" "$CONFIG"
 fi
-# 外接盘必须已挂载：没挂载时 download-models.py 会把目录建在内置盘上，
+# 模型盘必须已挂载：没挂载时 download-models.py 会把目录建在内置盘上，
 # 948GB 写进去就满了，所以这里先拦住。挂载点取目标路径的前两级
 # （如 /Volumes/llms）。
 DEST_VOL="$(printf '%s' "$DEST" | cut -d/ -f1-3)"

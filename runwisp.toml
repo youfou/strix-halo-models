@@ -32,7 +32,7 @@ shutdown_timeout = "30s"
 keep_runs = 10
 
 [tasks.download-models]
-description = "下载 395 用的 18 个模型（948.81GB）到外接 SSD"
+description = "下载 395 用的 18 个模型（948.81GB）到模型盘"
 # 脚本和 manifest.json 所在的目录。start-download.sh 每次启动时都会把
 # 这一行改成它自己所在的目录，所以你把文件夹放哪都行，不用手工改这里。
 working_dir = "~/strix-halo-models"
@@ -46,6 +46,11 @@ run = "python3 ./download-models.py --dest /Volumes/llms/models"
 # RunWisp 层面不重试：下载脚本自己无限重试；脚本返回非 0 意味着
 # 磁盘满、盘没挂载这类需要人处理的问题，重跑也一样失败。
 retry_attempts = 0
+# 一次性下载任务，重复触发应该丢弃而不是排队：默认 on_overlap=queue 时，
+# 在 Web UI 上连点 Run 会把第二次排进队列，等当前这次跑完（或被停掉）
+# 又自动跑起来；设成 skip 后重复触发直接丢弃（记为 skipped），正在跑
+# 的不受影响，也不会在停掉后又自己重启。
+on_overlap = "skip"
 # 停止时先发 SIGINT（等同于按 Ctrl+C），脚本会让 aria2c 保存断点
 # 状态后退出（退出码 130），再跑自动续传。
 stop_signal = "SIGINT"
