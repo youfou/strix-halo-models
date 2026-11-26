@@ -151,13 +151,6 @@ def main():
     n_skip_missing = 0
     n_skip_partial = 0
     bad = []  # (显示路径, 原因)
-    extra = []  # 磁盘上有、清单里没有的文件（只汇报，不处理）
-
-    # 先把清单里所有文件路径记下来，之后用来发现多余文件。
-    wanted = set()
-    for m in models:
-        for f in m.get("files", []):
-            wanted.add(os.path.join(dest, m["slug"], f["path"]))
 
     print("目标目录：%s" % dest)
     print("清单：%s（共 %d 个模型、%d 个文件）" % (
@@ -170,7 +163,10 @@ def main():
         for m in models:
             slug = m["slug"]
             for f in m.get("files", []):
-                rel = os.path.join(slug, f["path"])
+                # 注意：清单里分片模型的 path 带子目录（如 Q3_K_M/xxx.gguf），
+                # 但 download-models.py 存盘时只取 basename、扁平放在
+                # <dest>/<slug>/ 下；这里必须跟它一致，否则找不到文件。
+                rel = os.path.join(slug, os.path.basename(f["path"]))
                 path = os.path.join(dest, rel)
                 state = file_state(path, f["size"])
                 if state == "missing":
@@ -207,25 +203,12 @@ def main():
             n_ok, n_bad, n_skip_partial, n_skip_missing))
         return 1
 
-    # 磁盘上多余的文件（清单里没有）：只汇报，不动。
-    for root, _dirs, files in os.walk(dest):
-        for name in files:
-            if name.endswith(".aria2") or name.startswith("."):
-                continue
-            p = os.path.join(root, name)
-            if p not in wanted:
-                extra.append(os.path.relpath(p, dest))
-
     print()
     print("—— 汇总 ——")
     print("已校验通过：%d" % n_ok)
     print("坏文件：%d" % n_bad)
     print("跳过（还没下完）：%d" % n_skip_partial)
     print("跳过（还没开始下）：%d" % n_skip_missing)
-    if extra:
-        print("磁盘上多余的文件（清单里没有，只汇报，不处理）：")
-        for e in sorted(extra):
-            print("  %s" % e)
 
     if not bad:
         print("全部通过，没有坏文件。")
