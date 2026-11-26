@@ -2,7 +2,7 @@
 
 体积已对 Hugging Face 实测复核；耗时按 100 Mbps（持续约 11 MB/s）换算；评测分中带 `*` 为厂商自报、无独立复核，详见「说明与注意事项」。空白 = 未查到该项得分，不代表 0 分。
 
-使用方法：按推荐 / 场景挑模型。16 个全下约 716 GB。（2026-11-27 删 MiniMax M2.5 与 Qwen2.5-Coder-32B，见「说明与注意事项」。）
+使用方法：按推荐 / 场景挑模型。16 个 llama.cpp 模型全下约 716 GB。（2026-11-27 删 MiniMax M2.5 与 Qwen2.5-Coder-32B，见「说明与注意事项」。）Halogen 专用的 Qwen 3.8 Flash Next 另见「Halogen 专用模型」一节，不在评测分表里。
 
 ## 可运行模型（16 个）
 
@@ -38,6 +38,20 @@
 | Kimi K2.5 | MoE | IQ1_S | 210.3 | 76.8 | K3 更大，466GB |
 | Mistral-Large-3 | MoE | IQ1_S | 134.0 | 41.4 | 只超一点，但没留 KV 余量 |
 | Llama-4-Maverick | MoE | Q4_K_M | 242.8 | 21.0 | 只有极端 2bit 以下才塞得下，质量损失大 |
+
+## Halogen 专用模型 — Qwen 3.8 Flash Next（不跑 llama.cpp）
+
+此模型不在上面两张表里：它是 Halogen 引擎专用的 `.hgn` 格式，不跑 GGUF、不用 llama.cpp，也没有 SWE-bench / Aider / LiveCodeBench 这套基准分（它的卖点是推理速度和长上下文，不是刷分）。2026-11-27 已加入下载清单（manifest.json），随 16 个 llama.cpp 模型一起下。
+
+| 项目 | 内容 |
+| --- | --- |
+| 模型 | Qwen 3.8 Flash Next，125B MoE / 6B 激活，Qwen 3.8 这一代 |
+| 引擎 | Halogen（闭源容器 `ghcr.io/peonist-ai/halogen-flash-server`，端口 8731，需 ROCm + `/dev/kfd` + `/dev/dri`） |
+| 仓库 | `peonist-ai/halogen-qwen3.8-flash-next` |
+| 文件（10 个，共 120.30GB） | 主模型 `qwen38-flash-next-v2.hgn` 66.69GB + n-gram 表 `qwen38-flash-next-ngram.hgn` 51.20GB + draft head `qwen38-flash-next-drafter-r2-ht4.hgn` 1.49GB + vision `qwen38-flash-next-vision.hgn` 0.90GB + `tokenizer/` 6 个小文件 |
+| 上下文 | 原生 262,144 tokens，YaRN factor 4 可扩到约 1M |
+| 实测速度 | Framework 社区同机实测（llama.cpp Vulkan b11344 基线）：prefill 约 7.2k tokens 2,001 t/s（llama.cpp 460）、约 28.8k 为 2,005 t/s（409）；decode 散文 65.8 t/s（31.4）、写代码 100.6 t/s（31.8）、复制类 145.8 t/s（31.7）。但 Sleeping Robots 实测在约 55k 深度上下文的 agent 场景下，调优过的 Nathanw llama.cpp 解码反快 17–70%，「2–4 倍」要打折看 |
+| 部署前注意 | 下载脚本扁平化存放，tokenizer/ 的 6 个文件会落在模型目录根部，部署 Halogen 前需手动把它们移进 `tokenizer/` 子目录（命令在 README 的「Halogen 部署前」一节）；不要在下载未完成时移文件，否则会被判定缺失而重下 |
 
 ## 说明与注意事项
 
