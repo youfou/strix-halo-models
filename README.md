@@ -10,6 +10,8 @@ macOS 和 Ubuntu 都能跑：下载脚本是 Python 3 + aria2c，启动脚本会
 - `manifest.json`：下载清单，必须和脚本放同一目录
 - `runwisp.toml`：RunWisp 启动配置
 - `start-download.sh`：通过 RunWisp 启动 / 停止 / 查看下载
+- `verify-models.py`：校验已下完的文件 sha256 是否正确，坏文件问是否删除
+- `MODELS.md`：22 个模型的调研总表（18 个可运行 + 4 个装不下 + 说明）
 
 ## 准备（macOS）
 
@@ -177,6 +179,25 @@ python3 download-models.py --dest /mnt/llms/models       # Ubuntu
 ```
 
 随时都能停，重跑自动从断点续传，已下完的文件按大小跳过。启动命令本身不阻塞：它只触发任务就返回，下载在 daemon 手下后台跑；要停必须用 `stop` 或 Web UI。
+
+## 校验已下载的文件
+
+下载完（或怀疑盘出问题）后，用 `verify-models.py` 校验所有已下完文件的 sha256：
+
+```bash
+python3 verify-models.py
+```
+
+不加 `--dest` 时自动读 `runwisp.toml` 里 run 命令的 `--dest`；想指定目录用 `--dest /mnt/llms/models`。只校验已下完的文件（体积与清单一致且无 `.aria2` 控制文件）；没下完的、还没开始下的跳过，不算错。体积比清单大的文件也视为坏文件。
+
+校验出 sha256 不对的文件，逐个问是否删除（默认不删）；删掉后重新跑下载脚本即可补下。常用选项：
+
+```bash
+python3 verify-models.py --dry-run   # 只汇报，不提示、不删除
+python3 verify-models.py --yes       # 坏文件全部直接删，不逐个问
+```
+
+退出码：0 = 校验的全部通过；1 = 发现坏文件（无论删没删）；2 = 用法或配置错误。
 
 ## 注意事项
 
