@@ -139,6 +139,26 @@ run = "python3 ./download-models.py --dest /mnt/llms/models"
 
 RunWisp 自己的数据（数据库、日志、控制 socket）放在 `~/.runwisp`（内置盘），因为 exFAT 不支持 Unix socket；下载本身仍写到外接盘的 `models/`，不受影响。Web UI 的密码：没设 `RUNWISP_PASSWORD` 时每次启动随机生成，用 `runwisp password -c runwisp.toml --data ~/.runwisp` 查看；想固定密码就启动前加 `RUNWISP_PASSWORD=你的密码 ./start-download.sh`。注意：0.0.0.0 会把 Web UI 暴露给整个局域网，务必设一个固定密码（Web UI 能启停任务，不设密码等于把控制权交给局域网里的任何人）；想上 HTTPS 可在 `runwisp.toml` 的 `[daemon]` 里加 `tls = "auto"`（自签证书，浏览器会报证书警告，点继续即可）。
 
+### 环境变量
+
+启动脚本支持下面这些环境变量，不设就用默认值：
+
+| 变量 | 作用 | 默认值 |
+| --- | --- | --- |
+| `DOWNLOAD_DEST` | 目标目录（下载到哪） | `runwisp.toml` 里 run 行的 `--dest` |
+| `RUNWISP_HOST` | Web UI 监听地址 | `0.0.0.0`（全部网卡） |
+| `RUNWISP_PORT` | Web UI 端口 | `9477` |
+| `RUNWISP_DATA` | RunWisp 自己的数据目录 | `~/.runwisp` |
+| `RUNWISP_PASSWORD` | Web UI 密码 | 不设则每次启动随机生成 |
+
+一次指定多个时，把它们用空格隔开、都写在命令前面，只写需要改的就行，没写的用默认值：
+
+```bash
+DOWNLOAD_DEST=/mnt/llms/models RUNWISP_HOST=0.0.0.0 RUNWISP_PORT=9477 RUNWISP_PASSWORD=你的密码 ./start-download.sh
+```
+
+注意两点：`DOWNLOAD_DEST` 设了之后脚本会把它写回 `runwisp.toml` 的 `--dest`，下次不加这个变量也会沿用这个目录；`RUNWISP_PASSWORD` 是 RunWisp daemon 自己读的（脚本不直接读），所以必须在启动脚本前设好才生效。
+
 不经过 RunWisp、直接跑也可以：
 
 ```bash
