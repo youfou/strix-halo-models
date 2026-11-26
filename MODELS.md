@@ -51,7 +51,7 @@
 | 文件（10 个，共 120.30GB） | 主模型 `qwen38-flash-next-v2.hgn` 66.69GB + n-gram 表 `qwen38-flash-next-ngram.hgn` 51.20GB + draft head `qwen38-flash-next-drafter-r2-ht4.hgn` 1.49GB + vision `qwen38-flash-next-vision.hgn` 0.90GB + `tokenizer/` 6 个小文件 |
 | 上下文 | 原生 262,144 tokens，YaRN factor 4 可扩到约 1M |
 | 实测速度 | Framework 社区同机实测（llama.cpp Vulkan b11344 基线）：prefill 约 7.2k tokens 2,001 t/s（llama.cpp 460）、约 28.8k 为 2,005 t/s（409）；decode 散文 65.8 t/s（31.4）、写代码 100.6 t/s（31.8）、复制类 145.8 t/s（31.7）。但 Sleeping Robots 实测在约 55k 深度上下文的 agent 场景下，调优过的 Nathanw llama.cpp 解码反快 17–70%，「2–4 倍」要打折看 |
-| 部署前注意 | 下载脚本扁平化存放，tokenizer/ 的 6 个文件会落在模型目录根部，部署 Halogen 前需手动把它们移进 `tokenizer/` 子目录（命令在 README 的「Halogen 部署前」一节）；不要在下载未完成时移文件，否则会被判定缺失而重下 |
+| 部署前注意 | 下载脚本扁平化存放，tokenizer/ 的 6 个文件会落在模型目录根部，部署 Halogen 前需手动把它们复制一份进 `tokenizer/` 子目录（命令在 README 的「Halogen 部署前」一节）。用 `cp` 不是 `mv`（根目录那份要留着给下载/校验脚本），也不要用软链（Halogen 官方要求 tokenizer 目录必须是 FLAT 实文件）；等 `verify-models.py` 校验全部通过后再复制 |
 
 ## 说明与注意事项
 

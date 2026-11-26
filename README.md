@@ -4,7 +4,7 @@
 
 一次下载 16 个 llama.cpp 模型 + Halogen 的 Qwen 3.8 Flash Next（43 个文件，共 905.16GB），给 395 128GB 机器跑 llama.cpp 与 Halogen 用。清单（大小、sha256）已逐文件对 Hugging Face 核实，下载完逐个校验。2026-11-27 删 MiniMax M2.5 与 Qwen2.5-Coder-32B（腾 163.94GB），同日加 Halogen 模型 10 个文件、120.30GB（主模型 v2.hgn 66.69GB + n-gram 表 51.20GB + draft head 1.49GB + vision 0.90GB + tokenizer/ 6 个小文件）。
 
-**Halogen 的 tokenizer 文件位置注意**：下载脚本把文件扁平化存到 `<dest>/<slug>/<basename>`，tokenizer/ 下的 6 个文件（chat_template.jinja、generation_config.json、merges.txt、tokenizer.json、tokenizer_config.json、vocab.json）会落在模型目录根部（`/mnt/llms/models/halogen-qwen3.8-flash-next/`），而不是 tokenizer/ 子目录里。Halogen 要求 tokenizer 文件放在模型旁边的 `tokenizer/` 子目录里，部署 Halogen 前必须手动把这 6 个文件移进 `tokenizer/` 子目录，否则引擎找不到分词器。命令见下文「Halogen 部署前」一节。
+**Halogen 的 tokenizer 文件位置注意**：下载脚本把文件扁平化存到 `<dest>/<slug>/<basename>`，tokenizer/ 下的 6 个文件（chat_template.jinja、generation_config.json、merges.txt、tokenizer.json、tokenizer_config.json、vocab.json）会落在模型目录根部（`/mnt/llms/models/halogen-qwen3.8-flash-next/`），而不是 tokenizer/ 子目录里。Halogen 要求 tokenizer 文件放在模型旁边的 `tokenizer/` 子目录里，部署 Halogen 前必须把这 6 个文件复制一份进 `tokenizer/` 子目录，否则引擎找不到分词器。**用 `cp` 不是 `mv`，也不是软链**：`mv` 走后下载/校验脚本会把根目录那份当缺失而重下；软链官方明确不认，Halogen 文档写明 tokenizer 目录必须是 FLAT（实文件），HF 缓存的软链在容器里会悬空，官方要求用 `cp -L` 实化。复制的代价只是 6 个小文件多占一份（几 MB），命令见下文「Halogen 部署前」一节。
 
 macOS 和 Ubuntu 都能跑：下载脚本是 Python 3 + aria2c，启动脚本会自动按系统选命令（挂载检查、局域网 IP 显示都是跨平台的）。区别只在装软件的方式和目标盘的挂载点。
 
@@ -203,18 +203,18 @@ python3 verify-models.py --yes       # 坏文件全部直接删，不逐个问
 
 退出码：0 = 校验的全部通过；1 = 发现坏文件（无论删没删）；2 = 用法或配置错误。
 
-## Halogen 部署前：把 tokenizer 文件移进子目录
+## Halogen 部署前：把 tokenizer 文件复制进子目录
 
-Halogen 要求 tokenizer 文件放在模型旁边的 `tokenizer/` 子目录里，但下载脚本是扁平化存放的，6 个 tokenizer 文件下载完会落在模型目录根部。部署 Halogen 前先移进去（Ubuntu，模型盘在 `/mnt/llms/models`）：
+Halogen 要求 tokenizer 文件放在模型旁边的 `tokenizer/` 子目录里，但下载脚本是扁平化存放的，6 个 tokenizer 文件下载完会落在模型目录根部。部署 Halogen 前复制一份进去（Ubuntu，模型盘在 `/mnt/llms/models`）。**用 `cp` 不是 `mv`**：根目录那份要留着，下载脚本和 verify 脚本都按扁平化路径找文件，`mv` 走后会被当作缺失而重下；**也不要用软链**：Halogen 官方文档明确要求 tokenizer 目录必须是 FLAT（实文件），软链在容器里可能悬空。复制只多占几 MB：
 
 ```bash
 cd /mnt/llms/models/halogen-qwen3.8-flash-next
 mkdir -p tokenizer
-mv chat_template.jinja generation_config.json merges.txt tokenizer.json tokenizer_config.json vocab.json tokenizer/
-ls -R  # 确认：4 个 .hgn 在根目录，6 个 tokenizer 文件在 tokenizer/ 里
+cp chat_template.jinja generation_config.json merges.txt tokenizer.json tokenizer_config.json vocab.json tokenizer/
+ls -R  # 确认：根目录仍有 6 个 tokenizer 文件，tokenizer/ 里也有一份
 ```
 
-移完之后目录结构应该是：
+复制完之后目录结构应该是（根目录的 6 个 tokenizer 文件留着，tokenizer/ 里是副本）：
 
 ```text
 halogen-qwen3.8-flash-next/
@@ -222,7 +222,13 @@ halogen-qwen3.8-flash-next/
 ├── qwen38-flash-next-ngram.hgn         # 查找表
 ├── qwen38-flash-next-drafter-r2-ht4.hgn # draft head
 ├── qwen38-flash-next-vision.hgn        # 视觉模块
-└── tokenizer/
+├── chat_template.jinja                 # 根目录这份留着，给下载/校验脚本用
+├── generation_config.json
+├── merges.txt
+├── tokenizer.json
+├── tokenizer_config.json
+├── vocab.json
+└── tokenizer/                          # 副本，给 Halogen 用
     ├── chat_template.jinja
     ├── generation_config.json
     ├── merges.txt
@@ -231,7 +237,7 @@ halogen-qwen3.8-flash-next/
     └── vocab.json
 ```
 
-注意：不要在下载还没跑完时移文件——脚本按扁平化路径校验，移走后会被判定为缺失而重下。等 `verify-models.py` 校验全部通过后再移。
+注意：不要在下载还没跑完时复制——等 `verify-models.py` 校验全部通过后再复制，避免复制到一半的文件。之后若重新下载导致根目录的 tokenizer 文件更新了，记得重新复制一份进 `tokenizer/`。
 
 ## 注意事项
 
