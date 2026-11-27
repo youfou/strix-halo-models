@@ -37,7 +37,7 @@
 
 ## Halogen 专用模型 — Qwen 3.8 Flash Next（不跑 llama.cpp）
 
-此模型不在上面两张表里：它是 Halogen 引擎专用的 `.hgn` 格式，不跑 GGUF、不用 llama.cpp，也没有 SWE-bench / Aider / LiveCodeBench 这套基准分（它的卖点是推理速度和长上下文，不是刷分）。2026-11-27 已加入下载清单（manifest.json），随 16 个 llama.cpp 模型一起下。
+此模型不在上面两张表里：它是 Halogen 引擎专用的 `.hgn` 格式，不跑 GGUF、不用 llama.cpp，也没有 SWE-bench / Aider / LiveCodeBench 这套基准分（它的卖点是推理速度和长上下文，不是刷分）。2026-11-27 已加入下载清单（manifest.json），随 15 个 llama.cpp 模型一起下。
 
 | 项目 | 内容 |
 | --- | --- |
@@ -57,9 +57,10 @@
 - **GPQA 口径**：GPQA 一列里有几个官方只写了 GPQA、没明确 Diamond（Qwen3-Coder-Next、Qwen3-235B-A22B、GLM-4.7-Flash、Qwen3-30B-A3B），按 Diamond 理解会有小出入。
 - **2026-11-27 删除的两个模型**：MiniMax M2.5 与 Qwen2.5-Coder-32B 已从本表与下载清单（manifest.json）中移除。MiniMax M2.5 虽 SWE-bench 分数最高（80.2%），但 Q3_K_M 在 128GB 上只能开 8–16K 上下文，满 196K 跑不了，速度也慢，且已被 M2.7 / M3 取代；Qwen2.5-Coder-32B 为老模型，写码角色已被 Qwen3-Coder 系列覆盖。用户决定只往前看，不为情怀保留。两者共 163.94GB，腾出的空间预留给 Halogen 的 Qwen 3.8 Flash Next（约 111GB）。
 - **2026-11-27 删除的四个模型**：Qwen3-235B-A22B、Qwen3-30B-A3B、Qwen3-32B、Gemma-3-27B-it 已从本表与下载清单中移除。235B 的 SWE-bench 只有 42.0%，通用旗舰角色被 Qwen3.5-122B（SWE 72.0%）盖过；30B 的日常通用角色被同日新加的 Qwen3.6-35B-A3B（SWE 73.4%）取代；32B 与 Gemma-3 均为 dense、B 档，解码慢且评分弱，角色分别被 gpt-oss-120b / Qwen3.5-122B 与 Qwen3-VL-32B 盖过。四者共 204.20GB，腾出的空间给 Qwen3.6-35B-A3B 加了 UD-Q6_K 第二量化（29.31GB）。
+- **2026-11-27 加的两个模型**：Qwen3.8-27B（UD-Q4_K_XL 17.66GB + mmproj-BF16 0.93GB）与 DeepSeek V4 Flash 0731（antirez IQ2XXS 86.72GB + DSpark 5.99GB）已加入下载清单。两者都是 Gufo 官方支持的模型（27B 还是 Halogen 0.21.0+ 的第二模型）；Gufo 实测 27B 单路解码 70.6 t/s（DFlash2）、DeepSeek 26.6 t/s（DSpark）。27B 的 Q4_K_XL 在 main 上与 Gufo 10 月验证的 pin 版已不同（17.66GB vs 17.56GB），Gufo 若校验不过就用 pin 版 rev 4ca7207；DeepSeek 的两个文件与 Gufo pin 的 revision 逐字节一致。两者未进上表（无 SWE-bench 等基准分）；llama.cpp 一侧 27B 需较新的构建（Nathanw 的 2026-07-28 底座早于 Qwen3.8 发布，大概率加载不了，优先用 halo-box 验证）。
 - **量化取舍**：表中 Qwen 三个写码模型取的是 Q8_0（质量优先）；此前下载脚本用的是 Q4_K_M（速度优先，解码快约一倍）。两个都装得下，下载方案里可按偏好选，或两个都下对比。
 - **llama.cpp 版本要求**：Inkling-2-Mini 需 llama.cpp ≥ b12600；Ripple-65B-Preview ≥ b12167；Devstral-2 需 2025-12-12 之后合入 PR #17945 的构建；Qwen3.5-122B-A10B 需支持 qwen35moe 的构建；Bonsai 2.5 27B 的 PQ2_0 需 PrismML 自己的 llama.cpp fork，原版只能跑 Q2_0（7.67GB）。机器到手装 llama.cpp 时再逐个对版本。
-- **下载耗时口径**：按 100 Mbps、持续约 11 MB/s 换算。12 个全下合计 512.7GB（表内口径，单量化）；逐个耗时取整后相加为 771 分钟（12h51m，见「可运行模型」表合计行），按总流量直接估算约 13 小时，差异来自逐项取整。下载清单（manifest.json）现为 38 个文件、752.41GB。用户现有 2×1TB + 1×2TB SSD，容量足够。
+- **下载耗时口径**：按 100 Mbps、持续约 11 MB/s 换算。12 个全下合计 512.7GB（表内口径，单量化）；逐个耗时取整后相加为 771 分钟（12h51m，见「可运行模型」表合计行），按总流量直接估算约 13 小时，差异来自逐项取整。下载清单（manifest.json）现为 42 个文件、863.71GB。用户现有 2×1TB + 1×2TB SSD，容量足够。
 - **硬件前提**：机器：Ryzen AI Max+ 395 + 128GB，日常运行 Ubuntu。gpt-oss-120b 采用 MXFP4 约 63.4GB。此前结论：同配置下 Linux 性能优于 Windows（可用显存更多、RADV Vulkan 后端更快）。
 - **下一步**：先在本表圈定要下载的模型，再按圈定清单出具体下载脚本 / 方案。
 - **架构（MoE / dense）**：MoE = 混合专家，每 token 只激活一小部分参数（如 Qwen3-Coder-Next 为 80B 总参数 / 3B 激活），同等体积下解码更快，但全部权重仍须驻留内存；dense = 稠密模型，每 token 用全部参数。可运行 16 个中 MoE 8 个、dense 8 个；装不下的 4 个均为 MoE。这也呼应磁盘问题：MoE 每 token 实际读取的权重更少，对存储带宽更不敏感；用户的 SSD 均为 NVMe，模型放哪块盘对运行期性能影响很小。

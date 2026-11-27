@@ -40,9 +40,24 @@ MODELS = [
      "unsloth/Qwen3.6-35B-A3B-GGUF",
      [("exact", "Qwen3.6-35B-A3B-UD-Q4_K_M.gguf"),
       ("exact", "Qwen3.6-35B-A3B-UD-Q6_K.gguf")]),
+    ("qwen3.8-27b", "Qwen3.8-27B",
+     "unsloth/Qwen3.8-27B-GGUF",
+     # Gufo 主力文件：UD-Q4_K_XL（17.66GB）+ mmproj-BF16（视觉，0.93GB）。
+     # 注意：main 的 Q4_K_XL 与 Gufo 10 月验证的 pin 版（rev 4ca7207）
+     # 已不同（17.66GB vs 17.56GB，sha 不同）；Gufo 若校验不过就用
+     # pin 版。DFlash2 draft 不在 unsloth 仓库，Gufo 试用时另装。
+     [("exact", "Qwen3.8-27B-UD-Q4_K_XL.gguf"),
+      ("exact", "mmproj-BF16.gguf")]),
     ("gpt-oss-120b", "gpt-oss-120b",
      "ggml-org/gpt-oss-120b-GGUF",
      [("exact", "gpt-oss-120b-MXFP4.gguf")]),
+    ("deepseek-v4-flash", "DeepSeek V4 Flash 0731",
+     "antirez/deepseek-v4-gguf",
+     # Gufo 官方文件：antirez 的 IQ2XXS 主模型（86.72GB）+ DSpark
+     # 推测解码 companion（5.99GB）。main 与 Gufo pin 的两个 revision
+     # 逐字节一致（2026-11-27 核对过 sha256），可直接用。
+     [("exact", "DeepSeek-V4-Flash-IQ2XXS-w2Q2K-AProjQ8-SExpQ8-OutQ8-chat-v2-imatrix-0731.gguf"),
+      ("exact", "DeepSeek-V4-Flash-DSpark-support-0731.gguf")]),
     ("glm-4.7-flash", "GLM-4.7-Flash",
      "bartowski/zai-org_GLM-4.7-Flash-GGUF",
      [("exact", "zai-org_GLM-4.7-Flash-Q6_K_L.gguf")]),

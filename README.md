@@ -2,7 +2,7 @@
 
 模型总表见 [MODELS.md](MODELS.md)：22 个模型的调研（12 个在下载清单 + 4 个装不下 + 6 个已从清单删除），含推荐分级、评测分、量化与体积；Halogen 专用的 Qwen 3.8 Flash Next 另有一节（不跑 llama.cpp，无评测分表）。
 
-一次下载 13 个 llama.cpp 模型 + Halogen 的 Qwen 3.8 Flash Next（38 个文件，共 752.41GB），给 395 128GB 机器跑 llama.cpp 与 Halogen 用。清单（大小、sha256）已逐文件对 Hugging Face 核实，下载完逐个校验。2026-11-27 删 MiniMax M2.5 与 Qwen2.5-Coder-32B（腾 163.94GB），同日加 Halogen 模型 10 个文件、120.30GB（主模型 v2.hgn 66.69GB + n-gram 表 51.20GB + draft head 1.49GB + vision 0.90GB + tokenizer/ 6 个小文件），同日加 Qwen3.6-35B-A3B UD-Q4_K_M（22.13GB）；同日删 Qwen3-235B-A22B、Qwen3-30B-A3B、Qwen3-32B、Gemma-3-27B（腾 204.20GB），加 Qwen3.6-35B-A3B UD-Q6_K（29.31GB）。
+一次下载 15 个 llama.cpp 模型 + Halogen 的 Qwen 3.8 Flash Next（42 个文件，共 863.71GB），给 395 128GB 机器跑 llama.cpp 与 Halogen 用。清单（大小、sha256）已逐文件对 Hugging Face 核实，下载完逐个校验。2026-11-27 删 MiniMax M2.5 与 Qwen2.5-Coder-32B（腾 163.94GB），同日加 Halogen 模型 10 个文件、120.30GB（主模型 v2.hgn 66.69GB + n-gram 表 51.20GB + draft head 1.49GB + vision 0.90GB + tokenizer/ 6 个小文件），同日加 Qwen3.6-35B-A3B UD-Q4_K_M（22.13GB）；同日删 Qwen3-235B-A22B、Qwen3-30B-A3B、Qwen3-32B、Gemma-3-27B（腾 204.20GB），加 Qwen3.6-35B-A3B UD-Q6_K（29.31GB）；同日加 Qwen3.8-27B UD-Q4_K_XL（17.66GB）+ mmproj-BF16（0.93GB）、DeepSeek V4 Flash 0731 IQ2XXS（86.72GB）+ DSpark（5.99GB）。
 
 **Halogen 的 tokenizer 文件位置注意**：下载脚本把文件扁平化存到 `<dest>/<slug>/<basename>`，tokenizer/ 下的 6 个文件（chat_template.jinja、generation_config.json、merges.txt、tokenizer.json、tokenizer_config.json、vocab.json）会落在模型目录根部（`/mnt/llms/models/halogen-qwen3.8-flash-next/`），而不是 tokenizer/ 子目录里。Halogen 要求 tokenizer 文件放在模型旁边的 `tokenizer/` 子目录里，部署 Halogen 前必须把这 6 个文件复制一份进 `tokenizer/` 子目录，否则引擎找不到分词器。**用 `cp` 不是 `mv`，也不是软链**：`mv` 走后下载/校验脚本会把根目录那份当缺失而重下；软链官方明确不认，Halogen 文档写明 tokenizer 目录必须是 FLAT（实文件），HF 缓存的软链在容器里会悬空，官方要求用 `cp -L` 实化。复制的代价只是 6 个小文件多占一份（几 MB），命令见下文「Halogen 部署前」一节。
 
@@ -15,7 +15,7 @@ macOS 和 Ubuntu 都能跑：下载脚本是 Python 3 + aria2c，启动脚本会
 - `runwisp.toml`：RunWisp 启动配置
 - `start-download.sh`：通过 RunWisp 启动 / 停止 / 查看下载
 - `verify-models.py`：校验已下完的文件 sha256 是否正确，坏文件问是否删除
-- `MODELS.md`：22 个模型的调研总表（12 个在下载清单 + 4 个装不下 + 6 个已删 + 说明）
+- `MODELS.md`：22 个模型的调研总表（12 个在下载清单 + 4 个装不下 + 6 个已删 + 说明；Qwen3.6-35B、Qwen3.8-27B、DeepSeek V4 Flash 后加、不在总表里）
 
 ## 准备（macOS）
 

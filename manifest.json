@@ -113,6 +113,25 @@
       "size": 51442849728
     },
     {
+      "slug": "qwen3.8-27b",
+      "name": "Qwen3.8-27B",
+      "repo": "unsloth/Qwen3.8-27B-GGUF",
+      "gated": false,
+      "files": [
+        {
+          "path": "Qwen3.8-27B-UD-Q4_K_XL.gguf",
+          "size": 17659407264,
+          "sha256": "2a5f3565f39cf885103da591182c1266da64745737b42b452fd3e675369f1211"
+        },
+        {
+          "path": "mmproj-BF16.gguf",
+          "size": 931146432,
+          "sha256": "83ee4f4f205fa514161778c41df1ea14144faa0f713510893b63c2395f5c2d53"
+        }
+      ],
+      "size": 18590553696
+    },
+    {
       "slug": "gpt-oss-120b",
       "name": "gpt-oss-120b",
       "repo": "ggml-org/gpt-oss-120b-GGUF",
@@ -125,6 +144,25 @@
         }
       ],
       "size": 63387346208
+    },
+    {
+      "slug": "deepseek-v4-flash",
+      "name": "DeepSeek V4 Flash 0731",
+      "repo": "antirez/deepseek-v4-gguf",
+      "gated": false,
+      "files": [
+        {
+          "path": "DeepSeek-V4-Flash-IQ2XXS-w2Q2K-AProjQ8-SExpQ8-OutQ8-chat-v2-imatrix-0731.gguf",
+          "size": 86720111488,
+          "sha256": "ca22ae2f838e14077c22bc1c1417b71b45b5e5a3687bd96c2ac6e17fdb6261c0"
+        },
+        {
+          "path": "DeepSeek-V4-Flash-DSpark-support-0731.gguf",
+          "size": 5989114272,
+          "sha256": "7e319924541db3f7a163ed7e11d7532a70d48228ab59d36cb81e1d4511885360"
+        }
+      ],
+      "size": 92709225760
     },
     {
       "slug": "glm-4.7-flash",
@@ -318,6 +356,6 @@
       "size": 120297030276
     }
   ],
-  "total_size": 752411202052,
-  "total_files": 38
+  "total_size": 863710981508,
+  "total_files": 42
 }
