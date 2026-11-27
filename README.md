@@ -1,6 +1,6 @@
 # Strix Halo 395 模型下载
 
-模型总表见 [MODELS.md](MODELS.md)：22 个模型的调研（12 个在下载清单 + 4 个装不下 + 6 个已从清单删除），含推荐分级、评测分、量化与体积；Halogen 专用的 Qwen 3.8 Flash Next 另有一节（不跑 llama.cpp，无评测分表）。
+模型总表见 [MODELS.md](MODELS.md)：25 个模型的调研（15 个在下载清单 + 4 个装不下 + 6 个已从清单删除），含推荐分级、评测分、量化与体积；Halogen 专用的 Qwen 3.8 Flash Next 另有一节（不跑 llama.cpp，无评测分表）。
 
 一次下载 15 个 llama.cpp 模型 + Halogen 的 Qwen 3.8 Flash Next（42 个文件，共 863.71GB），给 395 128GB 机器跑 llama.cpp 与 Halogen 用。清单（大小、sha256）已逐文件对 Hugging Face 核实，下载完逐个校验。2026-11-27 删 MiniMax M2.5 与 Qwen2.5-Coder-32B（腾 163.94GB），同日加 Halogen 模型 10 个文件、120.30GB（主模型 v2.hgn 66.69GB + n-gram 表 51.20GB + draft head 1.49GB + vision 0.90GB + tokenizer/ 6 个小文件），同日加 Qwen3.6-35B-A3B UD-Q4_K_M（22.13GB）；同日删 Qwen3-235B-A22B、Qwen3-30B-A3B、Qwen3-32B、Gemma-3-27B（腾 204.20GB），加 Qwen3.6-35B-A3B UD-Q6_K（29.31GB）；同日加 Qwen3.8-27B UD-Q4_K_XL（17.66GB）+ mmproj-BF16（0.93GB）、DeepSeek V4 Flash 0731 IQ2XXS（86.72GB）+ DSpark（5.99GB）。
 
@@ -15,7 +15,7 @@ macOS 和 Ubuntu 都能跑：下载脚本是 Python 3 + aria2c，启动脚本会
 - `runwisp.toml`：RunWisp 启动配置
 - `start-download.sh`：通过 RunWisp 启动 / 停止 / 查看下载
 - `verify-models.py`：校验已下完的文件 sha256 是否正确，坏文件问是否删除
-- `MODELS.md`：22 个模型的调研总表（12 个在下载清单 + 4 个装不下 + 6 个已删 + 说明；Qwen3.6-35B、Qwen3.8-27B、DeepSeek V4 Flash 后加、不在总表里）
+- `MODELS.md`：25 个模型的调研总表（15 个在下载清单 + 4 个装不下 + 6 个已删 + 说明）
 
 ## 准备（macOS）
 

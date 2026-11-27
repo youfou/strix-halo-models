@@ -2,25 +2,28 @@
 
 体积已对 Hugging Face 实测复核；耗时按 100 Mbps（持续约 11 MB/s）换算；评测分中带 `*` 为厂商自报、无独立复核，详见「说明与注意事项」。空白 = 未查到该项得分，不代表 0 分。
 
-使用方法：按推荐 / 场景挑模型。12 个 llama.cpp 模型全下约 513 GB。（2026-11-27 删 MiniMax M2.5 与 Qwen2.5-Coder-32B，见「说明与注意事项」。）Halogen 专用的 Qwen 3.8 Flash Next 另见「Halogen 专用模型」一节，不在评测分表里。
+使用方法：按推荐 / 场景挑模型。15 个 llama.cpp 模型全下约 639 GB。（2026-11-27 删 MiniMax M2.5 与 Qwen2.5-Coder-32B，见「说明与注意事项」。）Halogen 专用的 Qwen 3.8 Flash Next 另见「Halogen 专用模型」一节，不在评测分表里。
 
-## 可运行模型（12 个）
+## 可运行模型（15 个）
 
 | 推荐 | 模型名称 | 架构 | 优势场景 | SWE-bench (%) | Aider (%) | LiveCodeBench (%) | GPQA (%) | AIME (%) | 量化 | 体积 (GB) | 预计耗时（分钟） | 预计耗时 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | A | Qwen3-Coder-Next 80B | MoE | agentic 写码旗舰 | 70.6 | 66.2 | 58.9 | 74.5 | 83.1 | Q8_0 | 84.8 | 128 | 2h08m |
 | A | Qwen3.5-122B-A10B | MoE | 长上下文全能 | 72.0 |  | 78.9 | 86.6 |  | Q4_K_M | 76.5 | 115 | 1h55m |
+| A | Qwen3.6-35B-A3B | MoE | 日常通用主力 | 73.4* |  | 80.4* | 86.0* | 92.7* | UD-Q4_K_M | 22.1 | 33 | 33m |
 | A | gpt-oss-120b | MoE | 推理 / 工具调用 | 62.4 | 41.8 | 87.8 | 80.1 | 92.5 | MXFP4 | 63.4 | 96 | 1h36m |
+| A | DeepSeek V4 Flash 0731 | MoE | 旗舰 MoE / 1M 上下文 | 79.0* |  | 91.6* | 88.1* | 95.8* | IQ2XXS | 86.7 | 131 | 2h11m |
 | A | Devstral-2 123B | dense | 软件工程 agent | 72.2* |  | 44.8 | 59.4 | 36.7 | Q4_K_M | 74.9 | 113 | 1h53m |
 | A | Inkling-2-Mini | MoE | 轻量 agentic / 1M 上下文 | 79.2* |  |  | 86.6 |  | Q8_0 | 27.8 | 42 | 42m |
 | A | Ripple-65B-Preview | dense | 终端写码 / 1M 上下文 | 76.5* |  |  | 85.2 | 98.3* | Q8_0 | 68.8 | 104 | 1h44m |
 | A | Qwen3-Coder-30B-A3B | MoE | 日常写码主力 | 51.6 | 33.3* | 40.3 | 51.6 | 29.0 | Q8_0 | 32.5 | 49 | 49m |
 | A | GLM-4.7-Flash | MoE | 轻量写码 | 59.2* |  | 64.0* | 75.2* | 91.6* | Q6_K_L | 25.0 | 37 | 37m |
 | A | Bonsai 2.5 27B | dense | 7GB 的 agentic 写码 | 75.6* |  | 83.0* | 87.7* |  | PQ2_0 | 7.3 | 10 | 10m |
+| B | Qwen3.8-27B | dense | 通用 / 视觉 |  |  | 90.3* | 89.2* |  | UD-Q4_K_XL | 17.7 | 26 | 26m |
 | B | Qwen3-8B | dense | 快速小模型 |  |  | 57.5 | 62.0 | 67.3 | Q8_0 | 8.7 | 13 | 13m |
 | 小众 | Qwen3-VL-32B | dense | 视觉 / OCR / GUI |  |  | 51.4 | 67.1 | 68.3 | Q8_0 | 34.8 | 52 | 52m |
 | 小众 | Qwen3-Embedding-8B | dense | 检索 / RAG |  |  |  |  |  | Q8_0 | 8.1 | 12 | 12m |
-| 合计 |  |  |  |  |  |  |  |  |  | 512.7 | 771 | 12h51m |
+| 合计 |  |  |  |  |  |  |  |  |  | 639.1 | 961 | 16h01m |
 
 注：SWE = SWE-bench，LCB = LiveCodeBench，GPQA 多为 Diamond 口径（个别官方未明确，见说明）。带 `*` 的分数为厂商自报、无独立复核，横向比较时需打折看。
 
@@ -51,16 +54,16 @@
 
 ## 说明与注意事项
 
-- **数据来源**：22 个模型逐个核实：官方 GGUF 仓库与推荐量化、Hugging Face 上实测文件大小、SWE-bench / Aider / LiveCodeBench / GPQA / AIME 原始出处得分。拿不到的留空，未编造。体积在成表前又对 HF API 逐个复核过一遍。
-- **`*` 的含义**：`*` = 厂商自报、无独立复核。11 月新出的三个（Inkling-2-Mini、Ripple-65B-Preview、Bonsai 2.5 27B）和 GLM-4.7-Flash、Devstral-2 的 SWE 分数都是官方口径，独立榜单跑出来一般更低（例如 Devstral-2 独立跑只有 53.8%，不是 72.2%）。Qwen3-Coder-Next 五项全出自官方技术报告，暂无独立榜单。
+- **数据来源**：25 个模型逐个核实：官方 GGUF 仓库与推荐量化、Hugging Face 上实测文件大小、SWE-bench / Aider / LiveCodeBench / GPQA / AIME 原始出处得分。拿不到的留空，未编造。体积在成表前又对 HF API 逐个复核过一遍。
+- **`*` 的含义**：`*` = 厂商自报、无独立复核。11 月新出的六个（Inkling-2-Mini、Ripple-65B-Preview、Bonsai 2.5 27B、Qwen3.6-35B-A3B、Qwen3.8-27B、DeepSeek V4 Flash）和 GLM-4.7-Flash、Devstral-2 的分数都是官方口径，独立榜单跑出来一般更低（例如 Devstral-2 独立跑只有 53.8%，不是 72.2%）。Qwen3-Coder-Next 五项全出自官方技术报告，暂无独立榜单。例外是 DeepSeek V4 Flash：Vals AI 独立榜单 SWE-bench Verified 88.8% 反而高于官方 79.0%（harness 不同，不宜直接横比）；27B 的 Vals AI 独立榜单是 Mini-SWE-agent 口径 SWE-bench Verified 86.0%，同样不宜直接横比。
 - **SWE-bench 注意**：SWE-bench 很看脚手架（harness），同一模型换个 harness 能差 20 个点，不要只盯这一个数横向排名。
-- **GPQA 口径**：GPQA 一列里有几个官方只写了 GPQA、没明确 Diamond（Qwen3-Coder-Next、Qwen3-235B-A22B、GLM-4.7-Flash、Qwen3-30B-A3B），按 Diamond 理解会有小出入。
+- **GPQA 口径**：GPQA 一列里有几个官方只写了 GPQA、没明确 Diamond（Qwen3-Coder-Next、GLM-4.7-Flash、Qwen3-30B-A3B），按 Diamond 理解会有小出入。
 - **2026-11-27 删除的两个模型**：MiniMax M2.5 与 Qwen2.5-Coder-32B 已从本表与下载清单（manifest.json）中移除。MiniMax M2.5 虽 SWE-bench 分数最高（80.2%），但 Q3_K_M 在 128GB 上只能开 8–16K 上下文，满 196K 跑不了，速度也慢，且已被 M2.7 / M3 取代；Qwen2.5-Coder-32B 为老模型，写码角色已被 Qwen3-Coder 系列覆盖。用户决定只往前看，不为情怀保留。两者共 163.94GB，腾出的空间预留给 Halogen 的 Qwen 3.8 Flash Next（约 111GB）。
 - **2026-11-27 删除的四个模型**：Qwen3-235B-A22B、Qwen3-30B-A3B、Qwen3-32B、Gemma-3-27B-it 已从本表与下载清单中移除。235B 的 SWE-bench 只有 42.0%，通用旗舰角色被 Qwen3.5-122B（SWE 72.0%）盖过；30B 的日常通用角色被同日新加的 Qwen3.6-35B-A3B（SWE 73.4%）取代；32B 与 Gemma-3 均为 dense、B 档，解码慢且评分弱，角色分别被 gpt-oss-120b / Qwen3.5-122B 与 Qwen3-VL-32B 盖过。四者共 204.20GB，腾出的空间给 Qwen3.6-35B-A3B 加了 UD-Q6_K 第二量化（29.31GB）。
-- **2026-11-27 加的两个模型**：Qwen3.8-27B（UD-Q4_K_XL 17.66GB + mmproj-BF16 0.93GB）与 DeepSeek V4 Flash 0731（antirez IQ2XXS 86.72GB + DSpark 5.99GB）已加入下载清单。两者都是 Gufo 官方支持的模型（27B 还是 Halogen 0.21.0+ 的第二模型）；Gufo 实测 27B 单路解码 70.6 t/s（DFlash2）、DeepSeek 26.6 t/s（DSpark）。27B 的 Q4_K_XL 在 main 上与 Gufo 10 月验证的 pin 版已不同（17.66GB vs 17.56GB），Gufo 若校验不过就用 pin 版 rev 4ca7207；DeepSeek 的两个文件与 Gufo pin 的 revision 逐字节一致。两者未进上表（无 SWE-bench 等基准分）；llama.cpp 一侧 27B 需较新的构建（Nathanw 的 2026-07-28 底座早于 Qwen3.8 发布，大概率加载不了，优先用 halo-box 验证）。
+- **2026-11-27 后加的三个模型已进表**：Qwen3.6-35B-A3B（日常主力候选；下载清单里另有 UD-Q6_K 第二量化 29.31GB，表内只计单量化 Q4_K_M）、Qwen3.8-27B（dense 27B，通用+视觉；Gufo 与 Halogen 的第二模型）、DeepSeek V4 Flash 0731（284B MoE / 13B 激活，Gufo 官方文件）。27B 的 Q4_K_XL 在 main 上与 Gufo 10 月验证的 pin 版已不同（17.66GB vs 17.56GB），Gufo 若校验不过就用 pin 版 rev 4ca7207；DeepSeek 的两个文件与 Gufo pin 的 revision 逐字节一致。27B 的 SWE-bench Pro 官方 61.7% 与 SWE-bench Verified 不是同一榜单，不进表。
 - **量化取舍**：表中 Qwen 三个写码模型取的是 Q8_0（质量优先）；此前下载脚本用的是 Q4_K_M（速度优先，解码快约一倍）。两个都装得下，下载方案里可按偏好选，或两个都下对比。
-- **llama.cpp 版本要求**：Inkling-2-Mini 需 llama.cpp ≥ b12600；Ripple-65B-Preview ≥ b12167；Devstral-2 需 2025-12-12 之后合入 PR #17945 的构建；Qwen3.5-122B-A10B 需支持 qwen35moe 的构建；Bonsai 2.5 27B 的 PQ2_0 需 PrismML 自己的 llama.cpp fork，原版只能跑 Q2_0（7.67GB）。机器到手装 llama.cpp 时再逐个对版本。
-- **下载耗时口径**：按 100 Mbps、持续约 11 MB/s 换算。12 个全下合计 512.7GB（表内口径，单量化）；逐个耗时取整后相加为 771 分钟（12h51m，见「可运行模型」表合计行），按总流量直接估算约 13 小时，差异来自逐项取整。下载清单（manifest.json）现为 42 个文件、863.71GB。用户现有 2×1TB + 1×2TB SSD，容量足够。
+- **llama.cpp 版本要求**：Inkling-2-Mini 需 llama.cpp ≥ b12600；Ripple-65B-Preview ≥ b12167；Devstral-2 需 2025-12-12 之后合入 PR #17945 的构建；Qwen3.5-122B-A10B 需支持 qwen35moe 的构建；Bonsai 2.5 27B 的 PQ2_0 需 PrismML 自己的 llama.cpp fork，原版只能跑 Q2_0（7.67GB）。Qwen3.8-27B 需较新的构建（Nathanw 的 2026-07-28 底座早于 Qwen3.8 发布，大概率加载不了，优先用 halo-box 验证）；DeepSeek V4 Flash 的 llama.cpp 支持是 2026 年中合入的，构建太旧同样加载不了。机器到手装 llama.cpp 时再逐个对版本。
+- **下载耗时口径**：按 100 Mbps、持续约 11 MB/s 换算。15 个全下合计 639.1GB（表内口径，单量化）；逐个耗时取整后相加为 961 分钟（16h01m，见「可运行模型」表合计行），按总流量直接估算约 16 小时，差异来自逐项取整。下载清单（manifest.json）现为 42 个文件、863.71GB。用户现有 2×1TB + 1×2TB SSD，容量足够。
 - **硬件前提**：机器：Ryzen AI Max+ 395 + 128GB，日常运行 Ubuntu。gpt-oss-120b 采用 MXFP4 约 63.4GB。此前结论：同配置下 Linux 性能优于 Windows（可用显存更多、RADV Vulkan 后端更快）。
 - **下一步**：先在本表圈定要下载的模型，再按圈定清单出具体下载脚本 / 方案。
-- **架构（MoE / dense）**：MoE = 混合专家，每 token 只激活一小部分参数（如 Qwen3-Coder-Next 为 80B 总参数 / 3B 激活），同等体积下解码更快，但全部权重仍须驻留内存；dense = 稠密模型，每 token 用全部参数。可运行 16 个中 MoE 8 个、dense 8 个；装不下的 4 个均为 MoE。这也呼应磁盘问题：MoE 每 token 实际读取的权重更少，对存储带宽更不敏感；用户的 SSD 均为 NVMe，模型放哪块盘对运行期性能影响很小。
+- **架构（MoE / dense）**：MoE = 混合专家，每 token 只激活一小部分参数（如 Qwen3-Coder-Next 为 80B 总参数 / 3B 激活），同等体积下解码更快，但全部权重仍须驻留内存；dense = 稠密模型，每 token 用全部参数。可运行 15 个中 MoE 8 个、dense 7 个；装不下的 4 个均为 MoE。这也呼应磁盘问题：MoE 每 token 实际读取的权重更少，对存储带宽更不敏感；用户的 SSD 均为 NVMe，模型放哪块盘对运行期性能影响很小。
