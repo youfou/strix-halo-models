@@ -1,4 +1,4 @@
-# RunWisp 启动配置：Strix Halo 395 模型下载（18 个模型，共 927.30GB）
+# RunWisp 启动配置：Strix Halo 395 模型下载（14 个模型，共 752.41GB）
 #
 # 用法（macOS / Ubuntu 通用）：
 #   1. 把 download-models.py、manifest.json、runwisp.toml、start-download.sh
@@ -32,7 +32,7 @@ shutdown_timeout = "30s"
 keep_runs = 10
 
 [tasks.download-models]
-description = "下载 395 用的 18 个模型（927.30GB）到模型盘"
+description = "下载 395 用的 14 个模型（752.41GB）到模型盘"
 # 脚本和 manifest.json 所在的目录。start-download.sh 每次启动时都会把
 # 这一行改成它自己所在的目录，所以你把文件夹放哪都行，不用手工改这里。
 working_dir = "~/strix-halo-models"

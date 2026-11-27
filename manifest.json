@@ -70,30 +70,6 @@
       "size": 133223048000
     },
     {
-      "slug": "qwen3-235b",
-      "name": "Qwen3-235B-A22B",
-      "repo": "bartowski/Qwen_Qwen3-235B-A22B-Instruct-2507-GGUF",
-      "gated": false,
-      "files": [
-        {
-          "path": "Qwen_Qwen3-235B-A22B-Instruct-2507-Q3_K_M/Qwen_Qwen3-235B-A22B-Instruct-2507-Q3_K_M-00001-of-00003.gguf",
-          "size": 39961427168,
-          "sha256": "2566cc3575a4d83628a8528f541a57190df2b59ec0a518bc320c268171a25ce9"
-        },
-        {
-          "path": "Qwen_Qwen3-235B-A22B-Instruct-2507-Q3_K_M/Qwen_Qwen3-235B-A22B-Instruct-2507-Q3_K_M-00002-of-00003.gguf",
-          "size": 39750662816,
-          "sha256": "57b4d93adc3035e0b35113474ba026f36785d1534f0c9ba341dd3e87f114a8f6"
-        },
-        {
-          "path": "Qwen_Qwen3-235B-A22B-Instruct-2507-Q3_K_M/Qwen_Qwen3-235B-A22B-Instruct-2507-Q3_K_M-00003-of-00003.gguf",
-          "size": 27617157600,
-          "sha256": "20c0c5a02176de1faef44acabd1e98d13926fb30a1c1d8963db722a75bbe7e7d"
-        }
-      ],
-      "size": 107329247584
-    },
-    {
       "slug": "qwen3.5-122b",
       "name": "Qwen3.5-122B-A10B",
       "repo": "unsloth/Qwen3.5-122B-A10B-GGUF",
@@ -127,9 +103,14 @@
           "path": "Qwen3.6-35B-A3B-UD-Q4_K_M.gguf",
           "size": 22134528992,
           "sha256": "ac0e2c1189e055faa36eff361580e79c5bd6f8e76bffb4ce547f167d53e31a61"
+        },
+        {
+          "path": "Qwen3.6-35B-A3B-UD-Q6_K.gguf",
+          "size": 29308320736,
+          "sha256": "4fe53b148b46f9b88830e2a3055c5b15c3a4d1e3ddc9a1384a108d8b9d59f043"
         }
       ],
-      "size": 22134528992
+      "size": 51442849728
     },
     {
       "slug": "gpt-oss-120b",
@@ -158,53 +139,6 @@
         }
       ],
       "size": 24979492736
-    },
-    {
-      "slug": "qwen3-30b",
-      "name": "Qwen3-30B-A3B",
-      "repo": "bartowski/Qwen_Qwen3-30B-A3B-Instruct-2507-GGUF",
-      "gated": false,
-      "files": [
-        {
-          "path": "Qwen_Qwen3-30B-A3B-Instruct-2507-Q8_0.gguf",
-          "size": 32483932160,
-          "sha256": "c2b7658bc62282083a8296a535400520b612a1044322be77ad7a53fa4d4fb92c"
-        }
-      ],
-      "size": 32483932160
-    },
-    {
-      "slug": "qwen3-32b",
-      "name": "Qwen3-32B",
-      "repo": "Qwen/Qwen3-32B-GGUF",
-      "gated": false,
-      "files": [
-        {
-          "path": "Qwen3-32B-Q8_0.gguf",
-          "size": 34817718912,
-          "sha256": "2c50eb8aad05047dbf24fa014eb621adf552e14176cabe0c5db4ef38c91e2169"
-        }
-      ],
-      "size": 34817718912
-    },
-    {
-      "slug": "gemma-3-27b",
-      "name": "Gemma-3-27B-it",
-      "repo": "unsloth/gemma-3-27b-it-GGUF",
-      "gated": false,
-      "files": [
-        {
-          "path": "gemma-3-27b-it-Q8_0.gguf",
-          "size": 28707972192,
-          "sha256": "4f8cb99283aa9ed7926280a372e0b04224d2be0b790a03b5ad85d25a18906499"
-        },
-        {
-          "path": "mmproj-BF16.gguf",
-          "size": 857739392,
-          "sha256": "ef40d577c9a3911c4fb6add3f757c04307720e732a55f780b6fee0a7eb39e2b0"
-        }
-      ],
-      "size": 29565711584
     },
     {
       "slug": "devstral-2",
@@ -384,6 +318,6 @@
       "size": 120297030276
     }
   ],
-  "total_size": 927299491556,
-  "total_files": 44
+  "total_size": 752411202052,
+  "total_files": 38
 }

@@ -32,7 +32,7 @@ Strix Halo 395 (128GB) 模型批量下载脚本 —— 在 macOS 或 Ubuntu 上�
   本清单里的仓库目前全部公开，正常不需要。
 
 注意：脚本按 manifest.json（同目录）下载，清单在 2026-11-27 核实：
-  44 个文件，共 927.30 GB。（2026-11-27 删 MiniMax M2.5 与 Qwen2.5-Coder-32B，腾 163.94GB；同日加 Halogen 的 Qwen 3.8 Flash Next，10 个文件、120.30GB：主模型 v2.hgn 66.69GB + n-gram 表 51.20GB + draft head 1.49GB + vision 0.90GB + tokenizer/ 6 个小文件；同日加 Qwen3.6-35B-A3B UD-Q4_K_M，22.13GB。注意：下载脚本把文件扁平化存到 <dest>/<slug>/<basename>，tokenizer/ 下的 6 个文件会落在模型目录根部，部署 Halogen 前需手动把它们复制一份进 tokenizer/ 子目录（用 cp，不用 mv，见 README）。）
+  38 个文件，共 752.41 GB。（2026-11-27 删 MiniMax M2.5 与 Qwen2.5-Coder-32B，腾 163.94GB；同日加 Halogen 的 Qwen 3.8 Flash Next，10 个文件、120.30GB：主模型 v2.hgn 66.69GB + n-gram 表 51.20GB + draft head 1.49GB + vision 0.90GB + tokenizer/ 6 个小文件；同日加 Qwen3.6-35B-A3B UD-Q4_K_M，22.13GB；同日删 Qwen3-235B-A22B、Qwen3-30B-A3B、Qwen3-32B、Gemma-3-27B，腾 204.20GB，加 Qwen3.6-35B-A3B UD-Q6_K，29.31GB。注意：下载脚本把文件扁平化存到 <dest>/<slug>/<basename>，tokenizer/ 下的 6 个文件会落在模型目录根部，部署 Halogen 前需手动把它们复制一份进 tokenizer/ 子目录（用 cp，不用 mv，见 README）。）
 """
 
 import argparse
