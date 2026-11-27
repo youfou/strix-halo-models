@@ -5,8 +5,15 @@ For each model: pull the repo file tree, match the exact GGUF files we want
 (single files and multi-part shards), and record path, size (bytes) and the
 LFS sha256 (oid). Also records whether the repo is gated (needs HF token).
 
+Files without an LFS oid (small plain-text files such as the Halogen
+tokenizer files, stored directly in git) get their sha256 by downloading
+them (only if < 20 MB); anything bigger without an oid is reported as a
+problem instead of being recorded with a null hash, because
+verify-models.py treats a null hash as a mismatch.
+
 Output: ~/workspace/strix-halo-models/manifest.json
 """
+import hashlib
 import json
 import os
 import sys
@@ -32,6 +39,9 @@ MODELS = [
     ("qwen3.5-122b", "Qwen3.5-122B-A10B",
      "unsloth/Qwen3.5-122B-A10B-GGUF",
      [("prefix", "Q4_K_M/")]),
+    ("qwen3.6-35b", "Qwen3.6-35B-A3B",
+     "unsloth/Qwen3.6-35B-A3B-GGUF",
+     [("exact", "Qwen3.6-35B-A3B-UD-Q4_K_M.gguf")]),
     ("gpt-oss-120b", "gpt-oss-120b",
      "ggml-org/gpt-oss-120b-GGUF",
      [("exact", "gpt-oss-120b-MXFP4.gguf")]),
@@ -46,15 +56,20 @@ MODELS = [
      [("exact", "Qwen3-32B-Q8_0.gguf")]),
     ("gemma-3-27b", "Gemma-3-27B-it",
      "unsloth/gemma-3-27b-it-GGUF",
+     # mmproj 只 pin BF16：上游现已有 BF16/F16/F32 三个变体，写 contains
+     # 会全抓下来（多占约 2.5GB，视觉投影一个就够）；BF16 是旧清单
+     # 已在下的那个，保持不变。
      [("exact", "gemma-3-27b-it-Q8_0.gguf"),
-      ("contains", "mmproj")]),
+      ("exact", "mmproj-BF16.gguf")]),
     ("devstral-2", "Devstral-2 123B",
      "unsloth/Devstral-2-123B-Instruct-2512-GGUF",
      [("prefix", "Q4_K_M/")]),
     ("qwen3-vl-32b", "Qwen3-VL-32B",
      "Qwen/Qwen3-VL-32B-Instruct-GGUF",
+     # mmproj 只 pin Q8_0（旧清单已在下的那个）；上游现多了一个 F16
+     # 变体，写 contains 会多抓 1.2GB。
      [("exact", "Qwen3VL-32B-Instruct-Q8_0.gguf"),
-      ("contains", "mmproj")]),
+      ("exact", "mmproj-Qwen3VL-32B-Instruct-Q8_0.gguf")]),
     ("qwen3-8b", "Qwen3-8B",
      "Qwen/Qwen3-8B-GGUF",
      [("exact", "Qwen3-8B-Q8_0.gguf")]),
@@ -63,8 +78,10 @@ MODELS = [
      [("exact", "Qwen3-Embedding-8B-Q8_0.gguf")]),
     ("inkling-2-mini", "Inkling-2-Mini",
      "ggml-org/Inkling-2-Mini-GGUF",
+     # mmproj 只 pin Q8_0（旧清单已在下的那个）；上游现多了一个 BF16
+     # 变体，写 contains 会多抓 0.64GB。
      [("exact", "Inkling-2-Mini-Q8_0.gguf"),
-      ("contains", "mmproj")]),
+      ("exact", "mmproj-Inkling-2-Mini-Q8_0.gguf")]),
     ("ripple-65b", "Ripple-65B-Preview",
      "AtomicChat/Ripple-65B-Preview-GGUF",
      [("contains", "Q8_0")]),
@@ -81,7 +98,15 @@ MODELS = [
       ("exact", "qwen38-flash-next-ngram.hgn"),
       ("exact", "qwen38-flash-next-drafter-r2-ht4.hgn"),
       ("exact", "qwen38-flash-next-vision.hgn"),
-      ("prefix", "tokenizer/")]),
+      # tokenizer 6 个文件写死 exact：旧写法 ("prefix", "tokenizer/")
+      # 匹配不上——prefix 匹配只认 .gguf，且旧收集口径会滤掉非 .gguf
+      # 文件，脚本重跑会把这 6 个文件丢掉；改 exact 后可完整再生。
+      ("exact", "tokenizer/chat_template.jinja"),
+      ("exact", "tokenizer/generation_config.json"),
+      ("exact", "tokenizer/merges.txt"),
+      ("exact", "tokenizer/tokenizer.json"),
+      ("exact", "tokenizer/tokenizer_config.json"),
+      ("exact", "tokenizer/vocab.json")]),
 ]
 
 
@@ -89,6 +114,27 @@ def get_json(url):
     req = urllib.request.Request(url, headers={"User-Agent": "manifest-fetch/1.0"})
     with urllib.request.urlopen(req, timeout=60) as r:
         return json.load(r)
+
+
+def sha256_url(url, max_bytes=20 * 1024 * 1024):
+    """下载小文件并算 sha256；超过 max_bytes 或失败返回 None。"""
+    req = urllib.request.Request(url, headers={"User-Agent": "manifest-fetch/1.0"})
+    h = hashlib.sha256()
+    total = 0
+    try:
+        with urllib.request.urlopen(req, timeout=120) as r:
+            while True:
+                chunk = r.read(1024 * 1024)
+                if not chunk:
+                    break
+                total += len(chunk)
+                if total > max_bytes:
+                    return None
+                h.update(chunk)
+    except Exception as e:
+        print("SHA FAIL %s: %s" % (url, e))
+        return None
+    return h.hexdigest()
 
 
 def match(path, kind, pat):
@@ -102,7 +148,7 @@ def match(path, kind, pat):
 
 
 def main():
-    manifest = {"generated": "2026-11-26", "models": []}
+    manifest = {"generated": "2026-11-27", "models": []}
     grand_total = 0
     problems = []
     for slug, name, repo, wanteds in MODELS:
@@ -125,7 +171,10 @@ def main():
             continue
         files_by_path = {}
         for x in tree:
-            if x.get("type") == "file" and x.get("path", "").endswith(".gguf"):
+            # 收所有文件：.gguf 之外还有 Halogen 的 .hgn 与 tokenizer 文件。
+            # prefix/contains 匹配仍只认 .gguf（见 match），exact 按路径
+            # 全等匹配，所以放宽收集口径不会误收无关文件。
+            if x.get("type") == "file":
                 lfs = x.get("lfs") or {}
                 files_by_path[x["path"]] = {
                     "size": x.get("size", 0),
@@ -149,9 +198,19 @@ def main():
                 uniq.append(f)
         total = sum(f["size"] for f in uniq)
         grand_total += total
-        missing_sha = [f["path"] for f in uniq if not f["sha256"]]
-        if missing_sha:
-            problems.append((slug, "missing sha256 for %s" % missing_sha))
+        # 没有 LFS oid 的小文件（<20MB）直接下载算 sha256；算不出或太大
+        # 的记为问题，不往清单里写 null——verify 会把 null 当不匹配。
+        for f in uniq:
+            if not f["sha256"]:
+                if f["size"] <= 20 * 1024 * 1024:
+                    got = sha256_url(
+                        "https://huggingface.co/%s/resolve/main/%s"
+                        % (repo, f["path"]))
+                    if got:
+                        f["sha256"] = got
+                        print("    sha256(下载算得) %s" % f["path"])
+                if not f["sha256"]:
+                    problems.append((slug, "no sha256 for %s" % f["path"]))
         manifest["models"].append({
             "slug": slug, "name": name, "repo": repo, "gated": gated,
             "files": uniq, "size": total,
